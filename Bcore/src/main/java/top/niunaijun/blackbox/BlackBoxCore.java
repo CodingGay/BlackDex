@@ -203,21 +203,9 @@ public class BlackBoxCore extends ClientConfiguration {
         return binder;
     }
 
-    /**
-     * Process type
-     */
     private enum ProcessType {
-        /**
-         * Server process
-         */
         Server,
-        /**
-         * Virtual app process
-         */
         BAppClient,
-        /**
-         * Main process
-         */
         Main,
     }
 

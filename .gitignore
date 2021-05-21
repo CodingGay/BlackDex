@@ -87,4 +87,4 @@ lint/tmp/
 *.DS_Store
 
 # git rm -r --cached .
-# git add . 
+# git add .
