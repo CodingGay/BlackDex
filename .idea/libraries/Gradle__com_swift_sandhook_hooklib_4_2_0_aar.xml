@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.swift.sandhook:hooklib:4.2.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d7beba6f948ab42ee9a69d5c4bf105a/hooklib-4.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d7beba6f948ab42ee9a69d5c4bf105a/hooklib-4.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d7beba6f948ab42ee9a69d5c4bf105a/hooklib-4.2.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.swift.sandhook/hooklib/4.2.0/dd36c91899b7a60660c25e9c82896718687ad164/hooklib-4.2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.swift.sandhook/hooklib/4.2.0/b85df89745a3196498b685209bcc7fcee3377fbe/hooklib-4.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

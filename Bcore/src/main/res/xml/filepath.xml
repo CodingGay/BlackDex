@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--Context.getFilesDir() 位于/data/data/安装目录-->
+    <files-path name="internalPath" path="." />
+    <!--Context.getCacheDir()-->
+    <cache-path name="cachePath" path="." />
+    <!--Environment.getExternalStorageDirectory()-->
+    <external-path name="externalPath" path="." />
+    <!--Context.getExternalFilesDir(null)-->
+    <external-files-path name="externalFPath" path="." />
+    <!--sdcard path -->
+    <root-path name="sdPath" path="." />
+</paths>
