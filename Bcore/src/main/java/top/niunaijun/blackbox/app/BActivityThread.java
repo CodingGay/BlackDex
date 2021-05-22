@@ -26,6 +26,7 @@ import top.niunaijun.blackbox.core.IBActivityThread;
 import top.niunaijun.blackbox.core.VMCore;
 import top.niunaijun.blackbox.entity.AppConfig;
 import top.niunaijun.blackbox.core.IOCore;
+import top.niunaijun.blackbox.utils.Slog;
 import top.niunaijun.blackbox.utils.compat.ContextCompat;
 import top.niunaijun.blackbox.BlackBoxCore;
 
@@ -170,22 +171,27 @@ public class BActivityThread extends IBActivityThread.Stub {
 
         mBoundApplication = bindData;
 
-        Application application;
+        Application application = null;
         BlackBoxCore.get().getAppLifecycleCallback().beforeCreateApplication(packageName, processName, packageContext);
         try {
-            application = LoadedApk.makeApplication.call(loadedApk, false, null);
-
+            try {
+                application = LoadedApk.makeApplication.call(loadedApk, false, null);
+            } catch (Throwable e) {
+                Slog.e(TAG, "Unable to makeApplication");
+                e.printStackTrace();
+            }
             mInitialApplication = application;
-            ActivityThread.mInitialApplication.set(BlackBoxCore.mainThread(), mInitialApplication);
-            ContextCompat.fix((Context) ActivityThread.getSystemContext.call(BlackBoxCore.mainThread()));
-            ContextCompat.fix(mInitialApplication);
-
             if (Objects.equals(packageName, processName)) {
-                VMCore.dumpDex(mInitialApplication.getClassLoader(), processName);
+                ClassLoader loader;
+                if (application == null) {
+                    loader = LoadedApk.getClassloader.call(loadedApk);
+                } else {
+                    loader = application.getClassLoader();
+                }
+                VMCore.dumpDex(loader, processName);
             }
         } catch (Throwable e) {
             e.printStackTrace();
-            throw new RuntimeException("Unable to makeApplication", e);
         } finally {
             BlackBoxCore.get().uninstallPackage(packageName);
         }

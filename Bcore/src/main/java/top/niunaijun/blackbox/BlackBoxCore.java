@@ -109,9 +109,6 @@ public class BlackBoxCore extends ClientConfiguration {
     }
 
     public void doCreate() {
-        // fix contentProvider
-        if (isVirtualProcess()) {
-        }
         if (!isServerProcess()) {
             initService();
         }
@@ -143,7 +140,25 @@ public class BlackBoxCore extends ClientConfiguration {
         return BStorageManager.get();
     }
 
-    public boolean launchApk(String packageName) {
+    public boolean dumpDex(String packageName) {
+        InstallResult installResult = installPackage(packageName);
+        if (installResult.success) {
+            return launchApk(packageName);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean dumpDex(File file) {
+        InstallResult installResult = installPackage(file);
+        if (installResult.success) {
+            return launchApk(installResult.packageName);
+        } else {
+            return false;
+        }
+    }
+
+    private boolean launchApk(String packageName) {
         Intent launchIntentForPackage = getBPackageManager().getLaunchIntentForPackage(packageName, USER_ID);
         if (launchIntentForPackage == null) {
             return false;
