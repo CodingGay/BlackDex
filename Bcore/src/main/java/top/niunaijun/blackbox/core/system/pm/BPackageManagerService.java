@@ -50,7 +50,7 @@ import static android.content.pm.PackageManager.MATCH_DIRECT_BOOT_UNAWARE;
  * 此处无Bug
  */
 public class BPackageManagerService extends IBPackageManagerService.Stub implements ISystemService {
-    public static final String TAG = "VPackageManagerService";
+    public static final String TAG = "BPackageManagerService";
     public static BPackageManagerService sService = new BPackageManagerService();
     private final Settings mSettings = new Settings();
     private final ComponentResolver mComponentResolver;

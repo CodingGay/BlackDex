@@ -1,8 +1,6 @@
 package top.niunaijun.blackbox.app.configuration;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.utils.FileUtils;
@@ -16,16 +14,16 @@ import top.niunaijun.blackbox.utils.FileUtils;
  * 此处无Bug
  */
 public abstract class ClientConfiguration {
-    private File mExternalFilesDir;
+    private File mExternalDir;
 
     public final void init() {
-        mExternalFilesDir = BlackBoxCore.getContext().getExternalCacheDir().getParentFile();
+        mExternalDir = BlackBoxCore.getContext().getExternalCacheDir().getParentFile();
     }
 
     public abstract String getHostPackageName();
 
     public String getDexDumpDir() {
-        File dump = new File(mExternalFilesDir, "dump");
+        File dump = new File(mExternalDir, "dump");
         FileUtils.mkdirs(dump);
         return dump.getAbsolutePath();
     }

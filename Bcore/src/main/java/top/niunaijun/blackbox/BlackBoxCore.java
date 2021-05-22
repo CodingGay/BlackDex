@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.Process;
 
 import top.niunaijun.blackbox.app.configuration.ClientConfiguration;
+import top.niunaijun.blackbox.fake.frameworks.BDumpManager;
 import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.app.configuration.AppLifecycleCallback;
 import top.niunaijun.blackbox.fake.hook.HookManager;
@@ -118,6 +119,7 @@ public class BlackBoxCore extends ClientConfiguration {
         get().getService(ServiceManager.ACTIVITY_MANAGER);
         get().getService(ServiceManager.PACKAGE_MANAGER);
         get().getService(ServiceManager.STORAGE_MANAGER);
+        get().getService(ServiceManager.DUMP_MANAGER);
     }
 
     public static Object mainThread() {
@@ -140,25 +142,11 @@ public class BlackBoxCore extends ClientConfiguration {
         return BStorageManager.get();
     }
 
-    public boolean dumpDex(String packageName) {
-        InstallResult installResult = installPackage(packageName);
-        if (installResult.success) {
-            return launchApk(packageName);
-        } else {
-            return false;
-        }
+    public static BDumpManager getBDumpManager() {
+        return BDumpManager.get();
     }
 
-    public boolean dumpDex(File file) {
-        InstallResult installResult = installPackage(file);
-        if (installResult.success) {
-            return launchApk(installResult.packageName);
-        } else {
-            return false;
-        }
-    }
-
-    private boolean launchApk(String packageName) {
+    public boolean launchApk(String packageName) {
         Intent launchIntentForPackage = getBPackageManager().getLaunchIntentForPackage(packageName, USER_ID);
         if (launchIntentForPackage == null) {
             return false;

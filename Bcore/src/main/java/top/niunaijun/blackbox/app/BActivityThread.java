@@ -13,7 +13,9 @@ import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Process;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,7 @@ import top.niunaijun.blackbox.core.IBActivityThread;
 import top.niunaijun.blackbox.core.VMCore;
 import top.niunaijun.blackbox.entity.AppConfig;
 import top.niunaijun.blackbox.core.IOCore;
+import top.niunaijun.blackbox.entity.dump.DumpResult;
 import top.niunaijun.blackbox.utils.Slog;
 import top.niunaijun.blackbox.utils.compat.ContextCompat;
 import top.niunaijun.blackbox.BlackBoxCore;
@@ -122,6 +125,9 @@ public class BActivityThread extends IBActivityThread.Stub {
     }
 
     public void bindApplication(final String packageName, final String processName) {
+        if (mAppConfig == null) {
+            return;
+        }
         if (Looper.myLooper() != Looper.getMainLooper()) {
             final ConditionVariable conditionVariable = new ConditionVariable();
             new Handler(Looper.getMainLooper()).post(() -> {
@@ -135,45 +141,49 @@ public class BActivityThread extends IBActivityThread.Stub {
     }
 
     public synchronized void handleBindApplication(String packageName, String processName) {
-        PackageInfo packageInfo = BlackBoxCore.getBPackageManager().getPackageInfo(packageName, PackageManager.GET_PROVIDERS, BActivityThread.getUserId());
-        if (packageInfo == null)
-            return;
-        ApplicationInfo applicationInfo = packageInfo.applicationInfo;
-        if (packageInfo.providers == null) {
-            packageInfo.providers = new ProviderInfo[]{};
-        }
-        mProviders.addAll(Arrays.asList(packageInfo.providers));
-
-        Object boundApplication = ActivityThread.mBoundApplication.get(BlackBoxCore.mainThread());
-
-        Context packageContext = createPackageContext(applicationInfo);
-        Object loadedApk = ContextImpl.mPackageInfo.get(packageContext);
-        LoadedApk.mSecurityViolation.set(loadedApk, false);
-        // fix applicationInfo
-        LoadedApk.mApplicationInfo.set(loadedApk, applicationInfo);
-
-        VMCore.init(Build.VERSION.SDK_INT);
-        assert packageContext != null;
-        IOCore.get().enableRedirect(packageContext);
-
-        AppBindData bindData = new AppBindData();
-        bindData.appInfo = applicationInfo;
-        bindData.processName = processName;
-        bindData.info = loadedApk;
-        bindData.providers = mProviders;
-
-        ActivityThread.AppBindData.instrumentationName.set(boundApplication,
-                new ComponentName(bindData.appInfo.packageName, Instrumentation.class.getName()));
-        ActivityThread.AppBindData.appInfo.set(boundApplication, bindData.appInfo);
-        ActivityThread.AppBindData.info.set(boundApplication, bindData.info);
-        ActivityThread.AppBindData.processName.set(boundApplication, bindData.processName);
-        ActivityThread.AppBindData.providers.set(boundApplication, bindData.providers);
-
-        mBoundApplication = bindData;
-
-        Application application = null;
-        BlackBoxCore.get().getAppLifecycleCallback().beforeCreateApplication(packageName, processName, packageContext);
+        DumpResult result = new DumpResult();
+        result.packageName = packageName;
+        result.dir = new File(BlackBoxCore.get().getDexDumpDir(), packageName).getAbsolutePath();
         try {
+            PackageInfo packageInfo = BlackBoxCore.getBPackageManager().getPackageInfo(packageName, PackageManager.GET_PROVIDERS, BActivityThread.getUserId());
+            if (packageInfo == null)
+                return;
+            ApplicationInfo applicationInfo = packageInfo.applicationInfo;
+            if (packageInfo.providers == null) {
+                packageInfo.providers = new ProviderInfo[]{};
+            }
+            mProviders.addAll(Arrays.asList(packageInfo.providers));
+
+            Object boundApplication = ActivityThread.mBoundApplication.get(BlackBoxCore.mainThread());
+
+            Context packageContext = createPackageContext(applicationInfo);
+            Object loadedApk = ContextImpl.mPackageInfo.get(packageContext);
+            LoadedApk.mSecurityViolation.set(loadedApk, false);
+            // fix applicationInfo
+            LoadedApk.mApplicationInfo.set(loadedApk, applicationInfo);
+
+            VMCore.init(Build.VERSION.SDK_INT);
+            assert packageContext != null;
+            IOCore.get().enableRedirect(packageContext);
+
+            AppBindData bindData = new AppBindData();
+            bindData.appInfo = applicationInfo;
+            bindData.processName = processName;
+            bindData.info = loadedApk;
+            bindData.providers = mProviders;
+
+            ActivityThread.AppBindData.instrumentationName.set(boundApplication,
+                    new ComponentName(bindData.appInfo.packageName, Instrumentation.class.getName()));
+            ActivityThread.AppBindData.appInfo.set(boundApplication, bindData.appInfo);
+            ActivityThread.AppBindData.info.set(boundApplication, bindData.info);
+            ActivityThread.AppBindData.processName.set(boundApplication, bindData.processName);
+            ActivityThread.AppBindData.providers.set(boundApplication, bindData.providers);
+
+            mBoundApplication = bindData;
+
+            Application application = null;
+            BlackBoxCore.get().getAppLifecycleCallback().beforeCreateApplication(packageName, processName, packageContext);
+
             try {
                 application = LoadedApk.makeApplication.call(loadedApk, false, null);
             } catch (Throwable e) {
@@ -192,7 +202,10 @@ public class BActivityThread extends IBActivityThread.Stub {
             }
         } catch (Throwable e) {
             e.printStackTrace();
+            result.dumpError(e.getMessage());
         } finally {
+            mAppConfig = null;
+            BlackBoxCore.getBDumpManager().noticeMonitor(result);
             BlackBoxCore.get().uninstallPackage(packageName);
         }
     }

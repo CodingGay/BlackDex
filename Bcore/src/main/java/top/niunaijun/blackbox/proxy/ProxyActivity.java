@@ -2,6 +2,7 @@ package top.niunaijun.blackbox.proxy;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ public class ProxyActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         finish();
+        Process.killProcess(Process.myPid());
     }
 
     public static class P0 extends ProxyActivity {

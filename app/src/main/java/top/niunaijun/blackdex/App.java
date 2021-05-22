@@ -3,7 +3,7 @@ package top.niunaijun.blackdex;
 import android.app.Application;
 import android.content.Context;
 
-import top.niunaijun.blackbox.BlackBoxCore;
+import top.niunaijun.blackbox.BlackDexCore;
 import top.niunaijun.blackbox.app.configuration.ClientConfiguration;
 
 /**
@@ -18,10 +18,15 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        BlackBoxCore.get().doAttachBaseContext(base, new ClientConfiguration() {
+        BlackDexCore.get().doAttachBaseContext(base, new ClientConfiguration() {
             @Override
             public String getHostPackageName() {
                 return base.getPackageName();
+            }
+
+            @Override
+            public String getDexDumpDir() {
+                return super.getDexDumpDir();
             }
         });
     }
@@ -29,6 +34,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        BlackBoxCore.get().doCreate();
+        BlackDexCore.get().doCreate();
     }
 }

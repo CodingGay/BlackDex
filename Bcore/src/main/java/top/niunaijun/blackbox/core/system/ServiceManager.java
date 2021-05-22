@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import top.niunaijun.blackbox.core.system.am.BActivityManagerService;
+import top.niunaijun.blackbox.core.system.dump.BDumpManagerService;
 import top.niunaijun.blackbox.core.system.os.BStorageManagerService;
 import top.niunaijun.blackbox.core.system.pm.BPackageManagerService;
 import top.niunaijun.blackbox.core.system.user.BUserManagerService;
@@ -24,7 +25,7 @@ public class ServiceManager {
     public static final String PACKAGE_MANAGER = "package_manager";
     public static final String STORAGE_MANAGER = "storage_manager";
     public static final String USER_MANAGER = "user_manager";
-    public static final String Xposed_MANAGER = "Xposed_manager";
+    public static final String DUMP_MANAGER = "dump_manager";
 
     private final Map<String, IBinder> mCaches = new HashMap<>();
 
@@ -48,6 +49,7 @@ public class ServiceManager {
         mCaches.put(PACKAGE_MANAGER, BPackageManagerService.get());
         mCaches.put(STORAGE_MANAGER, BStorageManagerService.get());
         mCaches.put(USER_MANAGER, BUserManagerService.get());
+        mCaches.put(DUMP_MANAGER, BDumpManagerService.get());
     }
 
     public IBinder getServiceInternal(String name) {
