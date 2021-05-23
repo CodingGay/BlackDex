@@ -18,6 +18,7 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        String dir = base.getExternalCacheDir().getParent();
         BlackDexCore.get().doAttachBaseContext(base, new ClientConfiguration() {
             @Override
             public String getHostPackageName() {
@@ -26,7 +27,8 @@ public class App extends Application {
 
             @Override
             public String getDexDumpDir() {
-                return super.getDexDumpDir();
+                // 此处一定要给固定值，可以在doAttachBaseContext之前就把路径确定好。否则doAttachBaseContext后可能会遭到hook。
+                return dir;
             }
         });
     }
