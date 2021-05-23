@@ -12,47 +12,47 @@ import java.lang.reflect.Proxy;
  */
 @SuppressWarnings({"unchecked", "unused", "WeakerAccess"})
 public final class MirrorReflection {
-    
+
     private Class<?> clazz;
 
-    private MirrorReflection( Class<?> clazz) {
+    private MirrorReflection(Class<?> clazz) {
         this.clazz = clazz;
     }
 
-    
+
     public Class<?> getClazz() {
         return clazz;
     }
 
-    public static MirrorReflection on( String name) {
+    public static MirrorReflection on(String name) {
         return new MirrorReflection(findClass(name));
     }
 
-    public static MirrorReflection on( String name,  ClassLoader loader) {
+    public static MirrorReflection on(String name, ClassLoader loader) {
         return new MirrorReflection(findClass(name, loader));
     }
 
-    public static <T> MirrorReflection on( Class<T> clazz) {
+    public static <T> MirrorReflection on(Class<T> clazz) {
         return new MirrorReflection(clazz);
     }
 
-    public static <T> MethodWrapper<T> wrap( Method method) {
+    public static <T> MethodWrapper<T> wrap(Method method) {
         return new MethodWrapper<T>(method);
     }
 
-    public static <T> StaticMethodWrapper<T> wrapStatic( Method method) {
+    public static <T> StaticMethodWrapper<T> wrapStatic(Method method) {
         return new StaticMethodWrapper<T>(method);
     }
 
-    public <T> MethodWrapper<T> method( String name,  Class<?>... parameterTypes) {
+    public <T> MethodWrapper<T> method(String name, Class<?>... parameterTypes) {
         return method(clazz, name, parameterTypes);
     }
 
-    public static <T> MethodWrapper<T> method( String className,  String name,  Class<?>... parameterTypes) {
+    public static <T> MethodWrapper<T> method(String className, String name, Class<?>... parameterTypes) {
         return method(findClass(className), name, parameterTypes);
     }
 
-    public static <T> MethodWrapper<T> method( Class<?> clazz,  String name,  Class<?>... parameterTypes) {
+    public static <T> MethodWrapper<T> method(Class<?> clazz, String name, Class<?>... parameterTypes) {
         Method method = getMethod(clazz, name, parameterTypes);
         if ((parameterTypes == null || parameterTypes.length == 0) && method == null) {
             method = findMethodNoChecks(clazz, name);
@@ -61,15 +61,15 @@ public final class MirrorReflection {
     }
 
 
-    public <T> StaticMethodWrapper<T> staticMethod( String name,  Class<?>... parameterTypes) {
+    public <T> StaticMethodWrapper<T> staticMethod(String name, Class<?>... parameterTypes) {
         return staticMethod(clazz, name, parameterTypes);
     }
 
-    public static <T> StaticMethodWrapper<T> staticMethod( String className,  String name,  Class<?>... parameterTypes) {
+    public static <T> StaticMethodWrapper<T> staticMethod(String className, String name, Class<?>... parameterTypes) {
         return staticMethod(findClass(className), name, parameterTypes);
     }
 
-    public static <T> StaticMethodWrapper<T> staticMethod( Class<?> clazz,  String name,  Class<?>... parameterTypes) {
+    public static <T> StaticMethodWrapper<T> staticMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
         Method method = getMethod(clazz, name, parameterTypes);
         if ((parameterTypes == null || parameterTypes.length == 0) && method == null) {
             method = findMethodNoChecks(clazz, name);
@@ -77,33 +77,40 @@ public final class MirrorReflection {
         return wrapStatic(method);
     }
 
-    public static <T> FieldWrapper<T> wrap( Field field) {
+    public static <T> FieldWrapper<T> wrap(Field field) {
         return new FieldWrapper<>(field);
     }
 
-    public <T> FieldWrapper<T> field( String name) {
+    public <T> FieldWrapper<T> field(String name) {
         return field(clazz, name);
     }
 
-    public static <T> FieldWrapper<T> field( String className,  String name) {
+    public static <T> FieldWrapper<T> field(String className, String name) {
         return field(findClass(className), name);
     }
 
-    public static <T> FieldWrapper<T> field( Class<?> clazz,  String name) {
+    public static <T> FieldWrapper<T> field(Class<?> clazz, String name) {
         return wrap(getField(clazz, name));
     }
 
-    public static <T> ConstructorWrapper<T> wrap( Constructor<T> constructor) {
+    public static <T> ConstructorWrapper<T> wrap(Constructor<T> constructor) {
         return new ConstructorWrapper<>(constructor);
     }
 
-    public <T> ConstructorWrapper<T> constructor( Class<?>... parameterTypes) {
+    public <T> ConstructorWrapper<T> constructor(Class<?>... parameterTypes) {
         return wrap(getConstructor(clazz, parameterTypes));
     }
 
+    public <T> ConstructorWrapper<T> constructorStringClass(String... parameterTypes) {
+        Class<?>[] classes = new Class<?>[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            classes[i] = getClassFormString(parameterTypes[i]);
+        }
+        return constructor(classes);
+    }
 
-    
-    public static Class<?> findClassOrNull( String name) {
+
+    public static Class<?> findClassOrNull(String name) {
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException ignored) {
@@ -111,8 +118,8 @@ public final class MirrorReflection {
         }
     }
 
-    
-    public static Class<?> findClassOrNull( String name,  ClassLoader loader) {
+
+    public static Class<?> findClassOrNull(String name, ClassLoader loader) {
         try {
             return Class.forName(name, true, loader);
         } catch (ClassNotFoundException ignored) {
@@ -120,8 +127,8 @@ public final class MirrorReflection {
         }
     }
 
-    
-    public static Class<?> findClass( String name) {
+
+    public static Class<?> findClass(String name) {
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
@@ -130,8 +137,8 @@ public final class MirrorReflection {
         return null;
     }
 
-    
-    public static Class<?> findClass( String name,  ClassLoader loader) {
+
+    public static Class<?> findClass(String name, ClassLoader loader) {
         try {
             return Class.forName(name, true, loader);
         } catch (ClassNotFoundException e) {
@@ -140,15 +147,15 @@ public final class MirrorReflection {
         return null;
     }
 
-    public static Method getMethod( Class<?> clazz,  String name,  Class<?>... parameterTypes) {
+    public static Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
         return findMethod(clazz, name, parameterTypes);
     }
 
-    public static Method getMethod( Class<?> clazz,  String name) {
+    public static Method getMethod(Class<?> clazz, String name) {
         return findMethod(clazz, name);
     }
 
-    private static String getParameterTypesMessage( Class<?>[] parameterTypes) {
+    private static String getParameterTypesMessage(Class<?>[] parameterTypes) {
         if (parameterTypes == null || parameterTypes.length == 0) {
             return "()";
         }
@@ -165,13 +172,13 @@ public final class MirrorReflection {
         return sb.append(')').toString();
     }
 
-    
-    public static Method findMethod( Class<?> clazz,  String name,  Class<?>... parameterTypes) {
+
+    public static Method findMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
         checkForFindMethod(clazz, name, parameterTypes);
         return findMethodNoChecks(clazz, name, parameterTypes);
     }
 
-    
+
     public static Method findMethodNoChecks(Class<?> clazz, String name, Class<?>... parameterTypes) {
         while (clazz != null) {
             try {
@@ -185,7 +192,7 @@ public final class MirrorReflection {
         return null;
     }
 
-    
+
     public static Method findMethodNoChecks(Class<?> clazz, String name) {
         try {
             Method[] methods = clazz.getDeclaredMethods();
@@ -211,18 +218,18 @@ public final class MirrorReflection {
 
     }
 
-    
-    public static Field getField( Class<?> clazz,  String name) {
+
+    public static Field getField(Class<?> clazz, String name) {
         return findField(clazz, name);
     }
 
-    
+
     public static Field findField(Class<?> clazz, String name) {
         return findFieldNoChecks(clazz, name);
     }
 
-    
-    public static Field findFieldNoChecks( Class<?> clazz,  String name) {
+
+    public static Field findFieldNoChecks(Class<?> clazz, String name) {
         while (clazz != null) {
             try {
                 Field field = clazz.getDeclaredField(name);
@@ -235,16 +242,16 @@ public final class MirrorReflection {
         return null;
     }
 
-    public static <T> Constructor<T> getConstructor( Class<?> clazz,  Class<?>... parameterTypes) {
+    public static <T> Constructor<T> getConstructor(Class<?> clazz, Class<?>... parameterTypes) {
         return findConstructor(clazz, parameterTypes);
     }
 
-    public static <T> Constructor<T> findConstructor( Class<?> clazz,  Class<?>... parameterTypes) {
+    public static <T> Constructor<T> findConstructor(Class<?> clazz, Class<?>... parameterTypes) {
         checkForFindConstructor(clazz, parameterTypes);
         return findConstructorNoChecks(clazz, parameterTypes);
     }
 
-    public static <T> Constructor<T> findConstructorNoChecks( Class<?> clazz, Class<?>... parameterTypes) {
+    public static <T> Constructor<T> findConstructorNoChecks(Class<?> clazz, Class<?>... parameterTypes) {
         try {
             Constructor<T> constructor = (Constructor<T>) clazz.getDeclaredConstructor(parameterTypes);
             constructor.setAccessible(true);
@@ -264,7 +271,7 @@ public final class MirrorReflection {
         }
     }
 
-    public boolean isInstance( Object instance) {
+    public boolean isInstance(Object instance) {
         return clazz.isInstance(instance);
     }
 
@@ -299,7 +306,7 @@ public final class MirrorReflection {
             this.member = member;
         }
 
-        
+
         public final M unwrap() {
             return member;
         }
@@ -394,5 +401,48 @@ public final class MirrorReflection {
                 return null;
             }
         }
+    }
+
+    static Class<?> getClassFormString(String clazz) {
+        Class<?> type = getProtoType(clazz);
+        if (type == null) {
+            try {
+                type = Class.forName(clazz);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return type;
+    }
+
+    static Class<?> getProtoType(String typeName) {
+        if (typeName.equals("int")) {
+            return Integer.TYPE;
+        }
+        if (typeName.equals("long")) {
+            return Long.TYPE;
+        }
+        if (typeName.equals("boolean")) {
+            return Boolean.TYPE;
+        }
+        if (typeName.equals("byte")) {
+            return Byte.TYPE;
+        }
+        if (typeName.equals("short")) {
+            return Short.TYPE;
+        }
+        if (typeName.equals("char")) {
+            return Character.TYPE;
+        }
+        if (typeName.equals("float")) {
+            return Float.TYPE;
+        }
+        if (typeName.equals("double")) {
+            return Double.TYPE;
+        }
+        if (typeName.equals("void")) {
+            return Void.TYPE;
+        }
+        return null;
     }
 }

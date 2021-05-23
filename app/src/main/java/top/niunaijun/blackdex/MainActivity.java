@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_click).setOnClickListener(v -> {
             // 此方法会阻塞
-            boolean b = BlackDexCore.get().dumpDex(new File("/sdcard/huluxia.apk"));
+            boolean b = BlackDexCore.get().dumpDex("com.hicorenational.antifraud");
             if (!b) {
                 Log.d(TAG, "dumpDex: error.");
             }

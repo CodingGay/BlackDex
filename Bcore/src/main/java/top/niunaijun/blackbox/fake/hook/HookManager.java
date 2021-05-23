@@ -8,6 +8,7 @@ import java.util.Map;
 import top.niunaijun.blackbox.fake.service.IActivityManagerProxy;
 import top.niunaijun.blackbox.fake.service.IActivityTaskManagerProxy;
 import top.niunaijun.blackbox.fake.service.HCallbackProxy;
+import top.niunaijun.blackbox.fake.service.IAlarmManagerProxy;
 import top.niunaijun.blackbox.fake.service.IAppOpsManagerProxy;
 import top.niunaijun.blackbox.fake.service.IJobServiceProxy;
 import top.niunaijun.blackbox.fake.service.ITelephonyRegistryProxy;
@@ -48,6 +49,7 @@ public class HookManager {
             addInjector(new ITelephonyManagerProxy());
             addInjector(new HCallbackProxy());
             addInjector(new IAppOpsManagerProxy());
+            addInjector(new IAlarmManagerProxy());
             addInjector(new IStorageManagerProxy());
             addInjector(new ILauncherAppsProxy());
             addInjector(new IJobServiceProxy());

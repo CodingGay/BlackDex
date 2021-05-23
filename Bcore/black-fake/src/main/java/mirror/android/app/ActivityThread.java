@@ -12,6 +12,7 @@ import android.content.pm.ProviderInfo;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.IInterface;
+import android.util.ArrayMap;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class ActivityThread {
     public static MirrorReflection.FieldWrapper<Object> mBoundApplication = REF.field("mBoundApplication");
     public static MirrorReflection.FieldWrapper<Handler> mH = REF.field("mH");
     public static MirrorReflection.FieldWrapper<Application> mInitialApplication = REF.field("mInitialApplication");
+    public static MirrorReflection.FieldWrapper<ArrayMap<Object, Object>> mProviderMap = REF.field("mProviderMap");
     public static MirrorReflection.FieldWrapper<Instrumentation> mInstrumentation = REF.field("mInstrumentation");
     public static MirrorReflection.FieldWrapper<IInterface> sPackageManager = REF.field("sPackageManager");
     public static MirrorReflection.MethodWrapper<IBinder> getApplicationThread = REF.method("getApplicationThread");

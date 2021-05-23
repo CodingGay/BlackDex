@@ -3,6 +3,8 @@ package top.niunaijun.blackdex;
 import android.app.Application;
 import android.content.Context;
 
+import java.io.File;
+
 import top.niunaijun.blackbox.BlackDexCore;
 import top.niunaijun.blackbox.app.configuration.ClientConfiguration;
 
@@ -18,7 +20,7 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        String dir = base.getExternalCacheDir().getParent();
+        String dir = new File(base.getExternalCacheDir().getParent(), "dump").getAbsolutePath();
         BlackDexCore.get().doAttachBaseContext(base, new ClientConfiguration() {
             @Override
             public String getHostPackageName() {

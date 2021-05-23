@@ -1,14 +1,18 @@
 package top.niunaijun.blackbox.fake.service;
 
 import java.lang.reflect.Method;
+
 import mirror.android.app.ActivityManagerNative;
 import mirror.android.app.ActivityManagerOreo;
 
 import mirror.android.util.Singleton;
+import top.niunaijun.blackbox.BlackBoxCore;
+import top.niunaijun.blackbox.fake.delegate.ContentProviderDelegate;
 import top.niunaijun.blackbox.fake.hook.ProxyMethod;
 import top.niunaijun.blackbox.fake.hook.ScanClass;
 import top.niunaijun.blackbox.fake.hook.ClassInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;
+import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.utils.compat.BuildCompat;
 
 
@@ -49,6 +53,42 @@ public class IActivityManagerProxy extends ClassInvocationStub {
     @Override
     public boolean isBadEnv() {
         return false;
+    }
+
+    @ProxyMethod(name = "getContentProvider")
+    public static class GetContentProvider extends MethodHook {
+
+        @Override
+        protected Object hook(Object who, Method method, Object[] args) throws Throwable {
+            int authIndex = getAuthIndex();
+            Object auth = args[authIndex];
+
+            if (auth instanceof String) {
+                if (ProxyManifest.isProxy((String) auth)) {
+                    return method.invoke(who, args);
+                }
+
+                if (BuildCompat.isQ()) {
+                    args[1] = BlackBoxCore.getHostPkg();
+                }
+
+                if (auth.equals("settings") || auth.equals("media") || auth.equals("telephony")) {
+                    Object content = method.invoke(who, args);
+                    ContentProviderDelegate.update(content, (String) auth);
+                    return content;
+                }
+            }
+            return method.invoke(who, args);
+        }
+
+        private int getAuthIndex() {
+            // 10.0
+            if (BuildCompat.isQ()) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
     }
 
     @ProxyMethod(name = "startService")
@@ -100,7 +140,7 @@ public class IActivityManagerProxy extends ClassInvocationStub {
     public static class GetIntentSender extends MethodHook {
         @Override
         protected Object hook(Object who, Method method, Object[] args) throws Throwable {
-            return 0;
+            return null;
         }
     }
 

@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.Process;
 
 import top.niunaijun.blackbox.app.configuration.ClientConfiguration;
+import top.niunaijun.blackbox.fake.delegate.ContentProviderDelegate;
 import top.niunaijun.blackbox.fake.frameworks.BDumpManager;
 import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.app.configuration.AppLifecycleCallback;
@@ -110,6 +111,9 @@ public class BlackBoxCore extends ClientConfiguration {
     }
 
     public void doCreate() {
+        if (isVirtualProcess()) {
+            ContentProviderDelegate.init();
+        }
         if (!isServerProcess()) {
             initService();
         }

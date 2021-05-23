@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Process;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -183,12 +184,11 @@ public class BActivityThread extends IBActivityThread.Stub {
 
             Application application = null;
             BlackBoxCore.get().getAppLifecycleCallback().beforeCreateApplication(packageName, processName, packageContext);
-
             try {
                 application = LoadedApk.makeApplication.call(loadedApk, false, null);
             } catch (Throwable e) {
-                Slog.e(TAG, "Unable to makeApplication");
-                e.printStackTrace();
+//                Slog.e(TAG, "Unable to makeApplication");
+//                e.printStackTrace();
             }
             mInitialApplication = application;
             if (Objects.equals(packageName, processName)) {
