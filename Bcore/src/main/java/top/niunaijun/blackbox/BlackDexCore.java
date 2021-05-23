@@ -1,6 +1,7 @@
 package top.niunaijun.blackbox;
 
 import android.content.Context;
+import android.net.Uri;
 
 import java.io.File;
 
@@ -43,6 +44,15 @@ public class BlackDexCore {
     }
 
     public boolean dumpDex(File file) {
+        InstallResult installResult = BlackBoxCore.get().installPackage(file);
+        if (installResult.success) {
+            return BlackBoxCore.get().launchApk(installResult.packageName);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean dumpDex(Uri file) {
         InstallResult installResult = BlackBoxCore.get().installPackage(file);
         if (installResult.success) {
             return BlackBoxCore.get().launchApk(installResult.packageName);
