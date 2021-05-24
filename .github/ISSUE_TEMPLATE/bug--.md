@@ -19,4 +19,8 @@ assignees: nnjun
  - 设备: [小米10]
  - Android版本: [10]
 
+**运行日志**
+请提供运行时所有Logcat日志以便我们排查问题，如果您不是开发者请重现问题之后，提供手机存储：/Download/top.niunaijun.blackdex32(64)_logcat.txt 文件的内容，此内容重启应用将重置，请勿重启应用后才发送。
+
+
 **其他说明**
