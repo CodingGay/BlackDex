@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/language-java-brightgreen.svg)
 
-BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无需依赖任何环境任何手机都可以使用，包括模拟器。只需数秒，即可对已安装包括未安装的APK进行脱壳。
+BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无需依赖任何环境任何手机都可以使用，包括模拟器。只需几秒，即可对已安装包括未安装的APK进行脱壳。
 
 ## 项目声明
 - 由于 [黑盒BlackBox](https://github.com/nnjun/BlackBox) 已被抄家，多的不想说了，请关注本项目或者其他未来项目吧。
@@ -20,6 +20,9 @@ BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无
 
 ## 架构特别说明
 本项目区分32位与64位，目前是2个不同的app，如在Demo已安装列表内无法找到需要开启的app说明不支持，请使用另一个版本。
+
+## 演示
+![xx](demonstration.gif)
 
 ### License
 
