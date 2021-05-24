@@ -187,8 +187,8 @@ public class BActivityThread extends IBActivityThread.Stub {
             try {
                 application = LoadedApk.makeApplication.call(loadedApk, false, null);
             } catch (Throwable e) {
-//                Slog.e(TAG, "Unable to makeApplication");
-//                e.printStackTrace();
+                Slog.e(TAG, "Unable to makeApplication");
+                e.printStackTrace();
             }
             mInitialApplication = application;
             if (Objects.equals(packageName, processName)) {
@@ -198,16 +198,31 @@ public class BActivityThread extends IBActivityThread.Stub {
                 } else {
                     loader = application.getClassLoader();
                 }
-                VMCore.dumpDex(loader, processName);
+                handleDumpDex(packageName, result, loader);
             }
         } catch (Throwable e) {
             e.printStackTrace();
             result.dumpError(e.getMessage());
-        } finally {
             mAppConfig = null;
             BlackBoxCore.getBDumpManager().noticeMonitor(result);
             BlackBoxCore.get().uninstallPackage(packageName);
         }
+    }
+
+    private void handleDumpDex(String packageName, DumpResult result, ClassLoader classLoader) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ignored) {
+            }
+            try {
+                VMCore.dumpDex(classLoader, packageName);
+            } finally {
+                mAppConfig = null;
+                BlackBoxCore.getBDumpManager().noticeMonitor(result);
+                BlackBoxCore.get().uninstallPackage(packageName);
+            }
+        }).start();
     }
 
     private Context createPackageContext(ApplicationInfo info) {
