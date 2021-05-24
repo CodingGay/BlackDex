@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        flavorDimensions "BlackBox32"
+        flavorDimensions "BlackDex32"
     }
 
     productFlavors {
