@@ -3,8 +3,8 @@ package top.niunaijun.blackbox.utils.compat;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import mirror.android.content.pm.ParceledListSlice;
-import mirror.android.content.pm.ParceledListSliceJBMR2;
+import reflection.android.content.pm.ParceledListSlice;
+import reflection.android.content.pm.ParceledListSliceJBMR2;
 
 public class ParceledListSliceCompat {
 

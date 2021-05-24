@@ -6,15 +6,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 
-import mirror.android.os.BaseBundle;
-import mirror.android.os.BundleICS;
+import reflection.android.os.BaseBundle;
+import reflection.android.os.BundleICS;
 
 public class BundleCompat {
     public static IBinder getBinder(Bundle bundle, String key) {
         if (Build.VERSION.SDK_INT >= 18) {
             return bundle.getBinder(key);
         } else {
-            return mirror.android.os.Bundle.getIBinder.call(bundle, key);
+            return reflection.android.os.Bundle.getIBinder.call(bundle, key);
         }
     }
 
@@ -22,7 +22,7 @@ public class BundleCompat {
         if (Build.VERSION.SDK_INT >= 18) {
             bundle.putBinder(key, value);
         } else {
-            mirror.android.os.Bundle.putIBinder.call(bundle, key, value);
+            reflection.android.os.Bundle.putIBinder.call(bundle, key, value);
         }
     }
 

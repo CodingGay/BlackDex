@@ -4,8 +4,8 @@ import android.content.Context;
 
 import java.lang.reflect.Method;
 
-import mirror.android.app.IAlarmManager;
-import mirror.android.os.ServiceManager;
+import reflection.android.app.IAlarmManager;
+import reflection.android.os.ServiceManager;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;
 import top.niunaijun.blackbox.fake.hook.ProxyMethod;

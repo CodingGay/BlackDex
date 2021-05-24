@@ -4,8 +4,8 @@ import android.content.Context;
 
 import java.lang.reflect.Method;
 
-import mirror.android.content.pm.ILauncherApps;
-import mirror.android.os.ServiceManager;
+import reflection.android.content.pm.ILauncherApps;
+import reflection.android.os.ServiceManager;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.utils.MethodParameterUtils;
 

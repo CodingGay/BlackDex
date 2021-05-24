@@ -3,8 +3,8 @@ package top.niunaijun.blackbox.utils.compat;
 import android.os.IBinder;
 import android.os.IInterface;
 
-import mirror.android.app.ApplicationThreadNative;
-import mirror.android.app.IApplicationThreadOreo;
+import reflection.android.app.ApplicationThreadNative;
+import reflection.android.app.IApplicationThreadOreo;
 
 public class ApplicationThreadCompat {
 

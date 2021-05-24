@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-import mirror.android.app.ActivityThread;
+import reflection.android.app.ActivityThread;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.fake.hook.HookManager;
 import top.niunaijun.blackbox.fake.hook.IInjectHook;

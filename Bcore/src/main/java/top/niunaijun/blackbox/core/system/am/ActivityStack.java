@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mirror.android.app.ActivityManagerNative;
-import mirror.android.app.IActivityManager;
+import reflection.android.app.ActivityManagerNative;
+import reflection.android.app.IActivityManager;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.core.system.pm.BPackageManagerService;

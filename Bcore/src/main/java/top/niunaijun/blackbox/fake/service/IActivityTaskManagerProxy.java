@@ -1,7 +1,7 @@
 package top.niunaijun.blackbox.fake.service;
 
-import mirror.android.app.IActivityTaskManager;
-import mirror.android.os.ServiceManager;
+import reflection.android.app.IActivityTaskManager;
+import reflection.android.os.ServiceManager;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.ScanClass;
 

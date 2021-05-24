@@ -13,8 +13,6 @@ import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Process;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,16 +20,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import mirror.android.app.ActivityThread;
-import mirror.android.app.ContextImpl;
-import mirror.android.app.LoadedApk;
+import reflection.android.app.ActivityThread;
+import reflection.android.app.ContextImpl;
+import reflection.android.app.LoadedApk;
 import top.niunaijun.blackbox.core.IBActivityThread;
 import top.niunaijun.blackbox.core.VMCore;
 import top.niunaijun.blackbox.entity.AppConfig;
 import top.niunaijun.blackbox.core.IOCore;
 import top.niunaijun.blackbox.entity.dump.DumpResult;
 import top.niunaijun.blackbox.utils.Slog;
-import top.niunaijun.blackbox.utils.compat.ContextCompat;
 import top.niunaijun.blackbox.BlackBoxCore;
 
 /**

@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import java.io.FileDescriptor;
 import java.util.Map;
 
-import mirror.android.os.ServiceManager;
+import reflection.android.os.ServiceManager;
 
 /**
  * Created by Milk on 3/30/21.

@@ -15,8 +15,8 @@ import android.os.Process;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import mirror.android.app.ActivityThread;
-import mirror.android.app.ContextImpl;
+import reflection.android.app.ActivityThread;
+import reflection.android.app.ContextImpl;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.app.BActivityThread;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;

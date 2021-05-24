@@ -37,7 +37,11 @@ public class BlackDexCore {
     public boolean dumpDex(String packageName) {
         InstallResult installResult = BlackBoxCore.get().installPackage(packageName);
         if (installResult.success) {
-            return BlackBoxCore.get().launchApk(packageName);
+            boolean b = BlackBoxCore.get().launchApk(packageName);
+            if (!b) {
+                BlackBoxCore.get().uninstallPackage(installResult.packageName);
+            }
+            return b;
         } else {
             return false;
         }
@@ -46,7 +50,11 @@ public class BlackDexCore {
     public boolean dumpDex(File file) {
         InstallResult installResult = BlackBoxCore.get().installPackage(file);
         if (installResult.success) {
-            return BlackBoxCore.get().launchApk(installResult.packageName);
+            boolean b = BlackBoxCore.get().launchApk(installResult.packageName);
+            if (!b) {
+                BlackBoxCore.get().uninstallPackage(installResult.packageName);
+            }
+            return b;
         } else {
             return false;
         }
@@ -55,7 +63,11 @@ public class BlackDexCore {
     public boolean dumpDex(Uri file) {
         InstallResult installResult = BlackBoxCore.get().installPackage(file);
         if (installResult.success) {
-            return BlackBoxCore.get().launchApk(installResult.packageName);
+            boolean b = BlackBoxCore.get().launchApk(installResult.packageName);
+            if (!b) {
+                BlackBoxCore.get().uninstallPackage(installResult.packageName);
+            }
+            return b;
         } else {
             return false;
         }

@@ -5,8 +5,8 @@ import android.os.IBinder;
 
 import java.lang.reflect.Method;
 
-import mirror.android.app.job.IJobScheduler;
-import mirror.android.os.ServiceManager;
+import reflection.android.app.job.IJobScheduler;
+import reflection.android.os.ServiceManager;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;
 import top.niunaijun.blackbox.fake.hook.ProxyMethod;

@@ -22,6 +22,6 @@
 
 -keep class top.niunaijun.blackbox.** {*; }
 -keep class top.niunaijun.jnihook.** {*; }
--keep class mirror.** {*; }
+-keep class reflection.** {*; }
 -keep class android.** {*; }
 -keep class com.android.** {*; }

@@ -2,10 +2,10 @@ package top.niunaijun.blackbox.fake.service;
 
 import java.lang.reflect.Method;
 
-import mirror.android.app.ActivityManagerNative;
-import mirror.android.app.ActivityManagerOreo;
+import reflection.android.app.ActivityManagerNative;
+import reflection.android.app.ActivityManagerOreo;
 
-import mirror.android.util.Singleton;
+import reflection.android.util.Singleton;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.fake.delegate.ContentProviderDelegate;
 import top.niunaijun.blackbox.fake.hook.ProxyMethod;

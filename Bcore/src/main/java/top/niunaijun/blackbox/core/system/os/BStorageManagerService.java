@@ -1,15 +1,10 @@
 package top.niunaijun.blackbox.core.system.os;
 
-import android.net.Uri;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.storage.StorageVolume;
 
-import java.io.File;
-
 import top.niunaijun.blackbox.core.env.BEnvironment;
-import top.niunaijun.blackbox.BlackBoxCore;
-import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.core.system.ISystemService;
 import top.niunaijun.blackbox.core.system.user.BUserHandle;
 import top.niunaijun.blackbox.utils.compat.BuildCompat;
@@ -35,11 +30,11 @@ public class BStorageManagerService extends IBStorageManagerService.Stub impleme
     @Override
     public StorageVolume[] getVolumeList(int uid, String packageName, int flags, int userId) throws RemoteException {
         try {
-            StorageVolume[] storageVolumes = mirror.android.os.storage.StorageManager.getVolumeList.call(BUserHandle.getUserId(Process.myUid()), 0);
+            StorageVolume[] storageVolumes = reflection.android.os.storage.StorageManager.getVolumeList.call(BUserHandle.getUserId(Process.myUid()), 0);
             for (StorageVolume storageVolume : storageVolumes) {
-                mirror.android.os.storage.StorageVolume.mPath.set(storageVolume, BEnvironment.getExternalUserDir(userId));
+                reflection.android.os.storage.StorageVolume.mPath.set(storageVolume, BEnvironment.getExternalUserDir(userId));
                 if (BuildCompat.isPie()) {
-                    mirror.android.os.storage.StorageVolume.mInternalPath.set(storageVolume, BEnvironment.getExternalUserDir(userId));
+                    reflection.android.os.storage.StorageVolume.mInternalPath.set(storageVolume, BEnvironment.getExternalUserDir(userId));
                 }
             }
             return storageVolumes;

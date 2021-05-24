@@ -3,7 +3,7 @@ package top.niunaijun.blackbox.utils.compat;
 import android.content.Context;
 import android.content.ContextWrapper;
 
-import mirror.android.app.ContextImpl;
+import reflection.android.app.ContextImpl;
 import top.niunaijun.blackbox.BlackBoxCore;
 
 /**

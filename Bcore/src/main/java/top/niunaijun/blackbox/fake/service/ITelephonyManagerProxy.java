@@ -5,8 +5,8 @@ import android.os.IBinder;
 
 import java.lang.reflect.Method;
 
-import mirror.android.os.ServiceManager;
-import mirror.com.android.internal.telephony.ITelephony;
+import reflection.android.os.ServiceManager;
+import reflection.com.android.internal.telephony.ITelephony;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;

@@ -57,7 +57,6 @@ void DexDump::dumpDex(JNIEnv *env, jlong cookie, jstring dir) {
     char magic[8] = {0x64, 0x65, 0x78, 0x0a, 0x30, 0x33, 0x35, 0x00};
     auto base = reinterpret_cast<char *>(cookie);
     auto begin = *(size_t *) (base + beginOffset * sizeof(size_t));
-//    auto size = *(size_t *) (base + sizeOffset * sizeof(size_t));
     if (!PointerCheck::check(reinterpret_cast<void *>(begin))) {
         return;
     }

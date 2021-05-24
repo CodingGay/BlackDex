@@ -7,8 +7,8 @@ import android.os.IInterface;
 
 import java.lang.reflect.Method;
 
-import mirror.android.os.ServiceManager;
-import mirror.com.android.internal.app.IAppOpsService;
+import reflection.android.os.ServiceManager;
+import reflection.com.android.internal.app.IAppOpsService;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;
@@ -36,10 +36,10 @@ public class IAppOpsManagerProxy extends BinderInvocationStub {
 
     @Override
     protected void inject(Object baseInvocation, Object proxyInvocation) {
-        if (mirror.android.app.AppOpsManager.mService != null) {
+        if (reflection.android.app.AppOpsManager.mService != null) {
             AppOpsManager appOpsManager = (AppOpsManager) BlackBoxCore.getContext().getSystemService(Context.APP_OPS_SERVICE);
             try {
-                mirror.android.app.AppOpsManager.mService.set(appOpsManager, (IInterface) getProxyInvocation());
+                reflection.android.app.AppOpsManager.mService.set(appOpsManager, (IInterface) getProxyInvocation());
             } catch (Exception e) {
                 e.printStackTrace();
             }

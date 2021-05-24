@@ -2,7 +2,7 @@ package top.niunaijun.blackbox.fake.service.libcore;
 
 import java.lang.reflect.Method;
 
-import mirror.libcore.io.Libcore;
+import reflection.libcore.io.Libcore;
 import top.niunaijun.blackbox.fake.hook.ClassInvocationStub;
 import top.niunaijun.blackbox.core.IOCore;
 

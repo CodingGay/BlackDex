@@ -5,11 +5,11 @@ import android.content.pm.PackageParser.Package;
 import android.util.DisplayMetrics;
 import java.io.File;
 
-import mirror.android.content.pm.PackageParserLollipop;
-import mirror.android.content.pm.PackageParserLollipop22;
-import mirror.android.content.pm.PackageParserMarshmallow;
-import mirror.android.content.pm.PackageParserNougat;
-import mirror.android.content.pm.PackageParserPie;
+import reflection.android.content.pm.PackageParserLollipop;
+import reflection.android.content.pm.PackageParserLollipop22;
+import reflection.android.content.pm.PackageParserMarshmallow;
+import reflection.android.content.pm.PackageParserNougat;
+import reflection.android.content.pm.PackageParserPie;
 
 public class PackageParserCompat {
 
@@ -21,7 +21,7 @@ public class PackageParserCompat {
         } else if (BuildCompat.isL()) {
             return PackageParserLollipop.constructor.newInstance();
         } else {
-            return mirror.android.content.pm.PackageParser.constructor.newInstance(packageFile.getAbsolutePath());
+            return reflection.android.content.pm.PackageParser.constructor.newInstance(packageFile.getAbsolutePath());
         }
     }
 
@@ -33,7 +33,7 @@ public class PackageParserCompat {
         } else if (BuildCompat.isL()) {
             return PackageParserLollipop.parsePackage.callWithException(parser, packageFile, flags);
         } else {
-            return mirror.android.content.pm.PackageParser.parsePackage.callWithException(parser, packageFile, null,
+            return reflection.android.content.pm.PackageParser.parsePackage.callWithException(parser, packageFile, null,
                     new DisplayMetrics(), flags);
         }
     }
@@ -50,7 +50,7 @@ public class PackageParserCompat {
         } else if (BuildCompat.isL()) {
             PackageParserLollipop.collectCertificates.callWithException(parser, p, flags);
         } else {
-            mirror.android.content.pm.PackageParser.collectCertificates.call(parser, p, flags);
+            reflection.android.content.pm.PackageParser.collectCertificates.call(parser, p, flags);
         }
     }
 }

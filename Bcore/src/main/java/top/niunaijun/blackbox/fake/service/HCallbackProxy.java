@@ -3,7 +3,6 @@ package top.niunaijun.blackbox.fake.service;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 
 import androidx.annotation.NonNull;
@@ -11,11 +10,9 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import mirror.android.app.ActivityManagerNative;
-import mirror.android.app.ActivityThread;
-import mirror.android.app.IActivityManager;
-import mirror.android.app.servertransaction.ClientTransaction;
-import mirror.android.app.servertransaction.LaunchActivityItem;
+import reflection.android.app.ActivityThread;
+import reflection.android.app.servertransaction.ClientTransaction;
+import reflection.android.app.servertransaction.LaunchActivityItem;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.app.BActivityThread;
 import top.niunaijun.blackbox.fake.hook.IInjectHook;
@@ -36,7 +33,7 @@ public class HCallbackProxy implements IInjectHook, Handler.Callback {
     private AtomicBoolean mBeing = new AtomicBoolean(false);
 
     private Handler.Callback getHCallback() {
-        return mirror.android.os.Handler.mCallback.get(getH());
+        return reflection.android.os.Handler.mCallback.get(getH());
     }
 
     private Handler getH() {
@@ -50,7 +47,7 @@ public class HCallbackProxy implements IInjectHook, Handler.Callback {
         if (mOtherCallback != null && (mOtherCallback == this || mOtherCallback.getClass().getName().equals(this.getClass().getName()))) {
             mOtherCallback = null;
         }
-        mirror.android.os.Handler.mCallback.set(getH(), this);
+        reflection.android.os.Handler.mCallback.set(getH(), this);
     }
 
     @Override

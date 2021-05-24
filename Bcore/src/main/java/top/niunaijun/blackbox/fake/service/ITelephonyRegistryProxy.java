@@ -2,8 +2,8 @@ package top.niunaijun.blackbox.fake.service;
 
 import java.lang.reflect.Method;
 
-import mirror.android.os.ServiceManager;
-import mirror.com.android.internal.telephony.ITelephonyRegistry;
+import reflection.android.os.ServiceManager;
+import reflection.com.android.internal.telephony.ITelephonyRegistry;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;
 import top.niunaijun.blackbox.fake.hook.ProxyMethod;

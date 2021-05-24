@@ -3,8 +3,8 @@ package top.niunaijun.blackbox.fake.service;
 
 import java.lang.reflect.Method;
 
-import mirror.android.os.IDeviceIdentifiersPolicyService;
-import mirror.android.os.ServiceManager;
+import reflection.android.os.IDeviceIdentifiersPolicyService;
+import reflection.android.os.ServiceManager;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.fake.hook.BinderInvocationStub;
 import top.niunaijun.blackbox.fake.hook.MethodHook;
@@ -41,7 +41,7 @@ public class IDeviceIdentifiersPolicyProxy extends BinderInvocationStub {
     }
 
     @ProxyMethod(name = "getSerialForPackage")
-    public static class x extends MethodHook {
+    public static class GetSerialForPackage extends MethodHook {
         @Override
         protected Object hook(Object who, Method method, Object[] args) throws Throwable {
 //                args[0] = BlackBoxCore.getHostPkg();

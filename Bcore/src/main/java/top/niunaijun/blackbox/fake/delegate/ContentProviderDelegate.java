@@ -8,9 +8,9 @@ import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
 
-import mirror.android.app.IActivityManager;
-import mirror.android.content.ContentProviderHolderOreo;
-import mirror.android.providers.Settings;
+import reflection.android.app.IActivityManager;
+import reflection.android.content.ContentProviderHolderOreo;
+import reflection.android.providers.Settings;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.fake.service.provider.ContentProviderStub;
 import top.niunaijun.blackbox.fake.service.provider.SettingsProviderStub;

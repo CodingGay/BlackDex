@@ -17,9 +17,9 @@ import android.os.Build;
 import java.util.HashSet;
 import java.util.Set;
 
-import mirror.android.content.pm.ApplicationInfoL;
-import mirror.android.content.pm.ApplicationInfoN;
-import mirror.android.content.pm.SigningInfo;
+import reflection.android.content.pm.ApplicationInfoL;
+import reflection.android.content.pm.ApplicationInfoN;
+import reflection.android.content.pm.SigningInfo;
 import top.niunaijun.blackbox.core.env.BEnvironment;
 import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.core.env.AppSystemEnv;

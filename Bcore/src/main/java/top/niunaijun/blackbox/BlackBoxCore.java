@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.weishu.reflection.Reflection;
-import mirror.android.app.ActivityThread;
+import reflection.android.app.ActivityThread;
 import top.niunaijun.blackbox.fake.frameworks.BStorageManager;
 import top.niunaijun.blackbox.core.system.ServiceManager;
 
