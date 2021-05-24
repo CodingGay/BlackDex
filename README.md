@@ -5,10 +5,17 @@
 BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无需依赖任何环境任何手机都可以使用，包括模拟器。只需几秒，即可对已安装包括未安装的APK进行脱壳。
 
 ## 项目声明
-由于 [黑盒BlackBox](https://github.com/nnjun/BlackBox) 已被抄家，多的不想说了，请关注本项目或者其他未来项目吧。
+由于 [黑盒BlackBox](https://github.com/nnjun/BlackBox) 已被抄家，请关注本项目或者其他未来项目吧。
 
 ## 脱壳说明
-本项目针对一代壳，摆脱对以往脱壳环境的困扰，几乎支持5.0以上的任何系统。并且拥有 **快速**、**方便**、**成功率高** 的优点。一般只需要几秒钟即可完成对已安装包括未安装应用脱壳。
+本项目针对一代壳，摆脱对以往脱壳环境的困扰，几乎支持5.0以上的任何系统。并且拥有 **快速**、**方便**、**成功率高** 的优点。一般只需要几秒钟即可完成对已安装包括未安装应用脱壳。**未安装应用**脱壳时间主要花费在复制文件IO消耗上，由应用大小决定速度。已安装应用一般在数秒内即可完成脱壳。
+
+**不要问如何修复**</br>
+**不要问如何修复**</br>
+**不要问如何修复**</br>
+
+## 脱壳原理
+通过DexFile cookie进行脱壳，理论兼容art开始的所有版本。
 
 ## 环境要求
 - 一台普通手机
@@ -24,6 +31,14 @@ BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无
 ## 演示
 ![xx](demonstration.gif)
 
+## 展望未来？
+- 对抗抽取壳
+
+## 感谢
+- [VirtualApp](https://github.com/asLody/VirtualApp)  (小声bb：虽然被干了但是还是感谢)
+- [VirtualAPK](https://github.com/didi/VirtualAPK)
+- [FreeReflection](https://github.com/tiann/FreeReflection)
+- [Dreamland](https://github.com/canyie/Dreamland)
 ### License
 
 > ```

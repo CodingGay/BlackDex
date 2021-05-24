@@ -70,5 +70,4 @@ dependencies {
     implementation 'me.weishu:free_reflection:3.0.1'
     implementation project(':Bcore:black-hook')
     implementation project(':Bcore:black-fake')
-    implementation 'com.swift.sandhook:hooklib:4.2.0'
 }
