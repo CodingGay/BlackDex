@@ -64,24 +64,26 @@ void DexDump::dumpDex(JNIEnv *env, jlong cookie, jstring dir) {
     auto dirC = env->GetStringUTFChars(dir, 0);
 
     auto dexSizeOffset = ((unsigned long ) begin) + 0x20;
-    size_t size = *(size_t *) dexSizeOffset;
+    int size = *(size_t *) dexSizeOffset;
 
     auto buffer = malloc(size);
-    memcpy(buffer, reinterpret_cast<const void *>(begin), size);
-    // fix magic
-    memcpy(buffer, magic, sizeof(magic));
+    if (buffer) {
+        memcpy(buffer, reinterpret_cast<const void *>(begin), size);
+        // fix magic
+        memcpy(buffer, magic, sizeof(magic));
 
-    char path[1024];
-    sprintf(path, "%s/dex_%d.dex", dirC, size);
-    auto fd = open(path, O_CREAT | O_WRONLY, 0600);
-    ssize_t w = write(fd, buffer, size);
-    fsync(fd);
-    if (w > 0) {
-        ALOGD("dump dex ======> %s", path);
-    } else {
-        remove(path);
+        char path[1024];
+        sprintf(path, "%s/dex_%d.dex", dirC, size);
+        auto fd = open(path, O_CREAT | O_WRONLY, 0600);
+        ssize_t w = write(fd, buffer, size);
+        fsync(fd);
+        if (w > 0) {
+            ALOGD("dump dex ======> %s", path);
+        } else {
+            remove(path);
+        }
+        close(fd);
+        free(buffer);
+        env->ReleaseStringUTFChars(dir, dirC);
     }
-    close(fd);
-    free(buffer);
-    env->ReleaseStringUTFChars(dir, dirC);
 }
