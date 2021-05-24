@@ -23,12 +23,6 @@ public class ProxyActivity extends Activity {
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Process.killProcess(Process.myPid());
-    }
-
     public static class P0 extends ProxyActivity {
 
     }
