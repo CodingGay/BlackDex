@@ -1,5 +1,5 @@
 rootProject.name = "BlackDex"
-include ':app'
 include ':Bcore:black-hook'
 include ':Bcore:black-fake'
 include ':Bcore'
+include ':app'

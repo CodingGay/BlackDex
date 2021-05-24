@@ -1,3 +1,8 @@
 <resources>
+
     <string name="app_name">BlackDex</string>
+    <string name="filter">过滤</string>
+    <string name="choose">选择</string>
+    <string name="log">软件日志</string>
+    <string name="open_source">开源地址</string>
 </resources>
