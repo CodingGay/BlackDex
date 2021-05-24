@@ -3,14 +3,8 @@ package top.niunaijun.blackbox.proxy;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Process;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
-
-import top.niunaijun.blackbox.app.BActivityThread;
-import top.niunaijun.blackbox.fake.hook.HookManager;
-import top.niunaijun.blackbox.fake.service.HCallbackProxy;
-import top.niunaijun.blackbox.proxy.record.ProxyActivityRecord;
 
 /**
  * Created by Milk on 3/28/21.
@@ -27,6 +21,12 @@ public class ProxyActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Process.killProcess(Process.myPid());
     }
 
     public static class P0 extends ProxyActivity {
@@ -428,4 +428,5 @@ public class ProxyActivity extends Activity {
     public static class P99 extends ProxyActivity {
 
     }
+
 }
