@@ -112,9 +112,9 @@ void UnixFileSystemHook::init(JNIEnv *env) {
     const char *className = "java/io/UnixFileSystem";
     JniHook::HookJniFun(env, className, "canonicalize0", "(Ljava/lang/String;)Ljava/lang/String;",
                         (void *) new_canonicalize0, (void **) (&orig_canonicalize0), false);
-    JniHook::HookJniFun(env, className, "getBooleanAttributes0", "(Ljava/lang/String;)I",
-                        (void *) new_getBooleanAttributes0,
-                        (void **) (&orig_getBooleanAttributes0), false);
+//    JniHook::HookJniFun(env, className, "getBooleanAttributes0", "(Ljava/lang/String;)I",
+//                        (void *) new_getBooleanAttributes0,
+//                        (void **) (&orig_getBooleanAttributes0), false);
     JniHook::HookJniFun(env, className, "getLastModifiedTime0", "(Ljava/io/File;)J",
                         (void *) new_getLastModifiedTime0, (void **) (&orig_getLastModifiedTime0),
                         false);
