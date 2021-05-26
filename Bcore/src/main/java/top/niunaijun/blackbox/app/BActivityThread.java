@@ -216,6 +216,10 @@ public class BActivityThread extends IBActivityThread.Stub {
                 VMCore.dumpDex(classLoader, packageName);
             } finally {
                 mAppConfig = null;
+                File dir = new File(result.dir);
+                if (!dir.exists() || dir.listFiles().length == 0) {
+                    result.dumpError("not file");
+                }
                 BlackBoxCore.getBDumpManager().noticeMonitor(result);
                 BlackBoxCore.get().uninstallPackage(packageName);
             }
