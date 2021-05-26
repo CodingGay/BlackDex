@@ -149,11 +149,10 @@ class MainActivity : BaseActivity() {
                         )
                     )
                 } else {
-
                     viewModel.mDexDumpLiveData.postValue(
                         DumpInfo(
                             DumpInfo.FAIL,
-                            "错误原因:${result.msg}"
+                            "错误原因: ${result.msg}"
                         )
                     )
                 }

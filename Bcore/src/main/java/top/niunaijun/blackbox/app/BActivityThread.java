@@ -218,7 +218,7 @@ public class BActivityThread extends IBActivityThread.Stub {
                 mAppConfig = null;
                 File dir = new File(result.dir);
                 if (!dir.exists() || dir.listFiles().length == 0) {
-                    result.dumpError("not file");
+                    result.dumpError("not found dex file");
                 }
                 BlackBoxCore.getBDumpManager().noticeMonitor(result);
                 BlackBoxCore.get().uninstallPackage(packageName);
