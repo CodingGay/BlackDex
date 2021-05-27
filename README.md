@@ -1,6 +1,6 @@
 # BlackDex
 
-**[English](README_EN.md)**
+**[English Version](README_EN.md)**
 
 ![](https://img.shields.io/badge/language-java-brightgreen.svg)
 
