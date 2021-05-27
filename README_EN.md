@@ -29,7 +29,7 @@ BlackDex download：https://github.com/CodingGay/BlackDex/releases
 
 ## Preview
 
-![xx](D:\Code\BlackDex\demonstration.gif)
+![xx](demonstration.gif)
 
 ## Looking forward?
 
