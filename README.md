@@ -1,5 +1,7 @@
 # BlackDex
 
+**[English](README_EN.md)**
+
 ![](https://img.shields.io/badge/language-java-brightgreen.svg)
 
 BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无需依赖任何环境任何手机都可以使用，包括模拟器。只需几秒，即可对已安装包括未安装的APK进行脱壳。
@@ -45,7 +47,7 @@ BlackDex下载：https://github.com/CodingGay/BlackDex/releases
 
 > ```
 > Copyright 2021 Milk
-> 
+>
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
 > You may obtain a copy of the License at
