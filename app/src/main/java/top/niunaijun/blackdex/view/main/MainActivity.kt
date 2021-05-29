@@ -106,7 +106,7 @@ class MainActivity : BaseActivity() {
                         loadingView.dismiss()
                         MaterialDialog(this).show {
                             title(text = "脱壳失败")
-                            message(text = "未知错误，可前往GitHub(https://github.com/CodingGay/BlackDex)提Issue")
+                            message(text = "未知错误，可能是不兼容或者带有环境检测导致失败，可前往GitHub(https://github.com/CodingGay/BlackDex)提Issue")
                             negativeButton(text = "Github") {
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
