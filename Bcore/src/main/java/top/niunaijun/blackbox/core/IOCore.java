@@ -124,17 +124,4 @@ public class IOCore {
         }
         VMCore.enableIO();
     }
-
-    private void hideRoot(Map<String, String> rule) {
-        rule.put("/system/app/Superuser.apk", "/system/app/Superuser.apk-fake");
-        rule.put("/sbin/su", "/sbin/su-fake");
-        rule.put("/system/bin/su", "/system/bin/su-fake");
-        rule.put("/system/xbin/su", "/system/xbin/su-fake");
-        rule.put("/data/local/xbin/su", "/data/local/xbin/su-fake");
-        rule.put("/data/local/bin/su", "/data/local/bin/su-fake");
-        rule.put("/system/sd/xbin/su", "/system/sd/xbin/su-fake");
-        rule.put("/system/bin/failsafe/su", "/system/bin/failsafe/su-fake");
-        rule.put("/data/local/su", "/data/local/su-fake");
-        rule.put("/su/bin/su", "/su/bin/su-fake");
-    }
 }

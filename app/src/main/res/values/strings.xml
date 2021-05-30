@@ -8,7 +8,7 @@
     <string name="unpack_fail">Unpack Fail</string>
     <string name="confirm">Confirm</string>
     <string name="github">Github</string>
-    <string name="jump_issue">Unknown Error，You can jump to GitHub(https://github.com/CodingGay/BlackDex)open Issue</string>
+    <string name="jump_issue">Unknown Error，This may be an incompatibility or may have an environmental detection that causes the failure,You can jump to GitHub(https://github.com/CodingGay/BlackDex)open Issue</string>
     <string name="cancel">Cancel</string>
     <string name="dex_save">.dex file save in: %1$s</string>
     <string name="error_msg">Error: %1$s</string>

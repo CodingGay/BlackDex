@@ -8,7 +8,7 @@
     <string name="unpack_fail">脱壳失败</string>
     <string name="confirm">确定</string>
     <string name="github">Github</string>
-    <string name="jump_issue">未知错误，可前往GitHub(https://github.com/CodingGay/BlackDex)提Issue</string>
+    <string name="jump_issue">未知错误，可能是不兼容或者带有环境检测导致失败，可前往GitHub(https://github.com/CodingGay/BlackDex)提Issue</string>
     <string name="cancel">取消</string>
     <string name="dex_save">DEX文件储存在: %1$s</string>
     <string name="error_msg">错误原因: %1$s</string>

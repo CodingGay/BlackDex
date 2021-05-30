@@ -122,14 +122,16 @@ class MainActivity : PermissionActivity() {
                             title(res = R.string.unpack_fail)
                             message(res = R.string.jump_issue)
                             negativeButton(res = R.string.github) {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://github.com/CodingGay/BlackDex/issues")
-                                )
-                                startActivity(intent)
-                            }
-                            positiveButton(res = R.string.confirm)
+                                negativeButton(text = "Github") {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://github.com/CodingGay/BlackDex/issues")
+                                    )
+                                    startActivity(intent)
+                                }
+                                positiveButton(res = R.string.confirm)
 
+                            }
                         }
                     }
                     else -> {

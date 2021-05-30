@@ -138,7 +138,7 @@ public class BActivityThread extends IBActivityThread.Stub {
         }
     }
 
-    public synchronized void handleBindApplication(String packageName, String processName) {
+    private synchronized void handleBindApplication(String packageName, String processName) {
         DumpResult result = new DumpResult();
         result.packageName = packageName;
         result.dir = new File(BlackBoxCore.get().getDexDumpDir(), packageName).getAbsolutePath();
