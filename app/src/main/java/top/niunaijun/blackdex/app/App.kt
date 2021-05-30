@@ -1,10 +1,9 @@
-package top.niunaijun.blackboxa.app
+package top.niunaijun.blackdex.app
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.umeng.commonsdk.UMConfigure
-import top.niunaijun.blackdex.app.AppManager
 
 /**
  *
@@ -29,12 +28,12 @@ class App : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         mContext = base!!
-        UMConfigure.init(base, "60b373136c421a3d97d23c29", "Github", 0, "")
         AppManager.doAttachBaseContext(base)
     }
 
     override fun onCreate() {
         super.onCreate()
         AppManager.doOnCreate(mContext)
+        UMConfigure.init(this, "60b373136c421a3d97d23c29", "Github", UMConfigure.DEVICE_TYPE_PHONE, null)
     }
 }

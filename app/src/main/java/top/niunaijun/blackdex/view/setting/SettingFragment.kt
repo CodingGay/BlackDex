@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.folderChooser
-import top.niunaijun.blackboxa.app.App
+import top.niunaijun.blackdex.app.App
 import top.niunaijun.blackdex.R
 import top.niunaijun.blackdex.app.AppManager
 import top.niunaijun.blackdex.app.BlackDexLoader
