@@ -29,6 +29,8 @@ import top.niunaijun.blackdex.util.InjectionUtil
 import top.niunaijun.blackdex.util.LoadingUtil
 import top.niunaijun.blackdex.util.inflate
 import top.niunaijun.blackdex.view.base.BaseActivity
+import top.niunaijun.blackdex.view.setting.SettingActivity
+
 
 class MainActivity : BaseActivity() {
 
@@ -47,11 +49,8 @@ class MainActivity : BaseActivity() {
         setContentView(viewBinding.root)
 
         initToolbar(viewBinding.toolbarLayout.toolbar, R.string.app_name)
-
         initView()
-
         initViewModel()
-
         initSearchView()
 
         BlackDexCore.get().registerDumpMonitor(mMonitor)
@@ -181,7 +180,6 @@ class MainActivity : BaseActivity() {
         })
     }
 
-
     private fun filterApp(newText: String) {
         val newList = this.appList.filter {
             it.name.contains(newText, true) or it.packageName.contains(newText, true)
@@ -224,24 +222,17 @@ class MainActivity : BaseActivity() {
                 MaterialDialog(this).show {
                     title(text = "申请失败")
                     message(text = "请授予我们读写本地文件权限，否则软件将无法正常运行。")
-
                     if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
                         positiveButton(text = "再次申请") {
                             requestStoragePermission()
                         }
 
                     } else {
-
                         positiveButton(text = "手动授予") {
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                             val uri = Uri.fromParts("package", packageName, null)
                             intent.data = uri
-                            try {
-                                startActivity(intent)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+                            startActivity(intent)
                         }
                     }
                     negativeButton(text = "退出软件") {
@@ -281,6 +272,12 @@ class MainActivity : BaseActivity() {
             R.id.main_git -> {
                 val intent =
                     Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/CodingGay/BlackDex"))
+                startActivity(intent)
+            }
+
+            R.id.main_setting -> {
+                val intent =
+                    Intent(this, SettingActivity::class.java)
                 startActivity(intent)
             }
         }

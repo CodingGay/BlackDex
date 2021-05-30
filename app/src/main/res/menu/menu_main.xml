@@ -10,6 +10,11 @@
             app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/main_setting"
+        android:title="@string/app_setting"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/main_git"
         android:title="@string/open_source"
         app:showAsAction="never"/>

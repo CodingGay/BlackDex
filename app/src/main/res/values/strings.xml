@@ -3,4 +3,5 @@
     <string name="choose">选择</string>
     <string name="log">软件日志</string>
     <string name="open_source">开源地址</string>
+    <string name="app_setting">软件设置</string>
 </resources>

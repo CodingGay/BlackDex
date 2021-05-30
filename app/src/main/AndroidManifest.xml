@@ -3,29 +3,38 @@
         xmlns:tools="http://schemas.android.com/tools"
         package="top.niunaijun.blackdex">
 
-    <!--  Android 11 需要  -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+    <!-- Android 11 需要 -->
+    <uses-permission
+            android:name="android.permission.QUERY_ALL_PACKAGES"
             tools:ignore="QueryAllPackagesPermission" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+            android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+            tools:ignore="ScopedStorage" />
+    <uses-permission
+            android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+            tools:ignore="ScopedStorage" />
+
     <application
+            android:name="top.niunaijun.blackboxa.app.App"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:name=".App"
+            android:requestLegacyExternalStorage="true"
             android:supportsRtl="true"
             android:theme="@style/Theme.BlackDex">
-        <activity android:name=".view.base.WelcomeActivity"
+        <activity
+                android:name=".view.base.WelcomeActivity"
                 android:theme="@style/WelcomeTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".view.main.MainActivity">
-        </activity>
+        <activity android:name=".view.main.MainActivity" />
+        <activity android:name=".view.setting.SettingActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="文件储存">
+        <SwitchPreferenceCompat
+                android:disableDependentsState="true"
+                android:key="save_enable"
+                android:title="使用默认储存路径" />
+
+        <Preference
+                android:dependency="save_enable"
+                android:key="save_path"
+                android:title="自定义储存路径" />
+    </PreferenceCategory>
+</PreferenceScreen>

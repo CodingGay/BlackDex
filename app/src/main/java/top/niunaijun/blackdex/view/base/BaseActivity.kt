@@ -20,8 +20,9 @@ open class BaseActivity : AppCompatActivity() {
                 toolbar.setNavigationOnClickListener {
                     if (onBack != null) {
                         onBack()
+                    }else{
+                        finish()
                     }
-                    finish()
                 }
             }
         }
