@@ -11,8 +11,8 @@ android {
         applicationId "top.niunaijun.blackdex"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -72,6 +72,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
     implementation project(':Bcore')
 
@@ -86,6 +87,7 @@ dependencies {
     //third
 
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:files:3.2.1'
     //dialog
     implementation 'com.github.nukc.stateview:kotlin:2.2.0'
     //状态控制控件
@@ -94,6 +96,9 @@ dependencies {
     implementation 'com.github.Ferfalk:SimpleSearchView:0.2.0'
     //searchView
 
+    implementation  'com.umeng.umsdk:common:9.3.8'
+    implementation  'com.umeng.umsdk:asms:1.2.2'
+    //友盟
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

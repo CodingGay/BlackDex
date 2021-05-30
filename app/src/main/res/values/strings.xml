@@ -1,6 +1,26 @@
 <resources>
-    <string name="filter">过滤</string>
-    <string name="choose">选择</string>
-    <string name="log">软件日志</string>
-    <string name="open_source">开源地址</string>
+    <string name="filter">Filter</string>
+    <string name="choose">Select</string>
+    <string name="log">Logcat</string>
+    <string name="open_source">Open Source</string>
+    <string name="app_setting">Setting</string>
+    <string name="unpack_success">Unpack Success</string>
+    <string name="unpack_fail">Unpack Fail</string>
+    <string name="confirm">Confirm</string>
+    <string name="github">Github</string>
+    <string name="jump_issue">Unknown Error，This may be an incompatibility or may have an environmental detection that causes the failure,You can jump to GitHub(https://github.com/CodingGay/BlackDex)open Issue</string>
+    <string name="cancel">Cancel</string>
+    <string name="dex_save">.dex file save in: %1$s</string>
+    <string name="error_msg">Error: %1$s</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="request_again">Again</string>
+    <string name="request_later">Later</string>
+    <string name="jump_grant">Grant</string>
+    <string name="request_fail">Grant Fail</string>
+    <string name="denied_msg">Denying permission to read and write to local files will disable this feature</string>
+    <string name="request_storage_msg">This function requires you to grant the software the permission to read and write all files to run normally</string>
+
+    <string name="file_save">File</string>
+    <string name="use_default_file">Use Default Path</string>
+    <string name="rewrite_file_path">Customize the storage path</string>
 </resources>

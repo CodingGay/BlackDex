@@ -1,36 +1,35 @@
 package top.niunaijun.blackdex.view.main
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.files.fileChooser
 import com.ferfalk.simplesearchview.SimpleSearchView
 import com.roger.catloadinglibrary.CatLoadingView
+import com.umeng.analytics.MobclickAgent
 import top.niunaijun.blackbox.BlackDexCore
 import top.niunaijun.blackbox.core.system.dump.IBDumpMonitor
 import top.niunaijun.blackbox.entity.dump.DumpResult
-import top.niunaijun.blackbox.utils.compat.BuildCompat
 import top.niunaijun.blackdex.R
 import top.niunaijun.blackdex.data.entity.AppInfo
 import top.niunaijun.blackdex.data.entity.DumpInfo
 import top.niunaijun.blackdex.databinding.ActivityMainBinding
+import top.niunaijun.blackdex.util.FileUtil
 import top.niunaijun.blackdex.util.InjectionUtil
 import top.niunaijun.blackdex.util.LoadingUtil
 import top.niunaijun.blackdex.util.inflate
-import top.niunaijun.blackdex.view.base.BaseActivity
+import top.niunaijun.blackdex.view.base.PermissionActivity
+import top.niunaijun.blackdex.view.setting.SettingActivity
 
-class MainActivity : BaseActivity() {
+
+class MainActivity : PermissionActivity() {
 
     private val viewBinding: ActivityMainBinding by inflate()
 
@@ -47,11 +46,8 @@ class MainActivity : BaseActivity() {
         setContentView(viewBinding.root)
 
         initToolbar(viewBinding.toolbarLayout.toolbar, R.string.app_name)
-
         initView()
-
         initViewModel()
-
         initSearchView()
 
         BlackDexCore.get().registerDumpMonitor(mMonitor)
@@ -73,7 +69,25 @@ class MainActivity : BaseActivity() {
         }
 
         viewBinding.fab.setOnClickListener {
-            openDocumentedResult.launch("application/vnd.android.package-archive")
+            this.requestPermissionCallback = {
+                if (it) {
+                    this.requestPermissionCallback = null
+                    val initialDir = Environment.getExternalStorageDirectory()
+                    MaterialDialog(this).show {
+                        fileChooser(
+                            this@MainActivity,
+                            initialDirectory = initialDir,
+                            filter = FileUtil::filterApk,
+                        ) { _, file ->
+                            viewModel.startDexDump(file.absolutePath)
+                        }
+
+                        negativeButton(res = R.string.cancel)
+                    }
+
+                }
+            }
+            requestStoragePermission()
         }
     }
 
@@ -105,31 +119,33 @@ class MainActivity : BaseActivity() {
                     DumpInfo.TIMEOUT -> {
                         loadingView.dismiss()
                         MaterialDialog(this).show {
-                            title(text = "脱壳失败")
-                            message(text = "未知错误，可能是不兼容或者带有环境检测导致失败，可前往GitHub(https://github.com/CodingGay/BlackDex)提Issue")
-                            negativeButton(text = "Github") {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://github.com/CodingGay/BlackDex/issues")
-                                )
-                                startActivity(intent)
-                            }
-                            positiveButton(text = "确定")
+                            title(res = R.string.unpack_fail)
+                            message(res = R.string.jump_issue)
+                            negativeButton(res = R.string.github) {
+                                negativeButton(text = "Github") {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://github.com/CodingGay/BlackDex/issues")
+                                    )
+                                    startActivity(intent)
+                                }
+                                positiveButton(res = R.string.confirm)
 
+                            }
                         }
                     }
                     else -> {
                         viewModel.dexDumpSuccess()
                         val title = if (it.state == DumpInfo.SUCCESS) {
-                            "脱壳成功"
+                            getString(R.string.unpack_success)
                         } else {
-                            "脱壳失败"
+                            getString(R.string.unpack_fail)
                         }
                         loadingView.dismiss()
                         MaterialDialog(this).show {
                             title(text = title)
                             message(text = it.msg)
-                            positiveButton(text = "确定")
+                            positiveButton(res = R.string.confirm)
                         }
                     }
                 }
@@ -145,14 +161,14 @@ class MainActivity : BaseActivity() {
                     viewModel.mDexDumpLiveData.postValue(
                         DumpInfo(
                             DumpInfo.SUCCESS,
-                            "DEX文件储存在:${result.dir}"
+                            getString(R.string.dex_save, result.dir)
                         )
                     )
                 } else {
                     viewModel.mDexDumpLiveData.postValue(
                         DumpInfo(
                             DumpInfo.FAIL,
-                            "错误原因: ${result.msg}"
+                            getString(R.string.error_msg, result.msg)
                         )
                     )
                 }
@@ -181,7 +197,6 @@ class MainActivity : BaseActivity() {
         })
     }
 
-
     private fun filterApp(newText: String) {
         val newList = this.appList.filter {
             it.name.contains(newText, true) or it.packageName.contains(newText, true)
@@ -202,59 +217,6 @@ class MainActivity : BaseActivity() {
         window.peekDecorView()?.run {
             imm.hideSoftInputFromWindow(windowToken, 0)
         }
-    }
-
-    private fun requestStoragePermission() {
-        if (BuildCompat.isM() && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-    }
-
-    private val openDocumentedResult =
-        registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.run {
-                viewModel.startDexDump(it.toString())
-            }
-        }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (!it) {
-                MaterialDialog(this).show {
-                    title(text = "申请失败")
-                    message(text = "请授予我们读写本地文件权限，否则软件将无法正常运行。")
-
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                        positiveButton(text = "再次申请") {
-                            requestStoragePermission()
-                        }
-
-                    } else {
-
-                        positiveButton(text = "手动授予") {
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            val uri = Uri.fromParts("package", packageName, null)
-                            intent.data = uri
-                            try {
-                                startActivity(intent)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                    negativeButton(text = "退出软件") {
-                        finish()
-                    }
-                }
-            }
-        }
-
-
-    override fun onStart() {
-        super.onStart()
-        requestStoragePermission()
     }
 
     override fun onBackPressed() {
@@ -283,9 +245,24 @@ class MainActivity : BaseActivity() {
                     Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/CodingGay/BlackDex"))
                 startActivity(intent)
             }
+
+            R.id.main_setting -> {
+                val intent =
+                    Intent(this, SettingActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPause(this)
+    }
 }

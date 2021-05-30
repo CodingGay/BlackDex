@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/file_save">
+        <SwitchPreferenceCompat
+                android:disableDependentsState="true"
+                android:key="save_enable"
+                android:title="@string/use_default_file" />
+
+        <Preference
+                android:dependency="save_enable"
+                android:key="save_path"
+                android:title="@string/rewrite_file_path" />
+    </PreferenceCategory>
+</PreferenceScreen>
