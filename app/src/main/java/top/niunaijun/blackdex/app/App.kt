@@ -3,6 +3,7 @@ package top.niunaijun.blackboxa.app
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.umeng.commonsdk.UMConfigure
 import top.niunaijun.blackdex.app.AppManager
 
 /**
@@ -28,6 +29,7 @@ class App : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         mContext = base!!
+        UMConfigure.init(base, "60b373136c421a3d97d23c29", "Github", 0, "")
         AppManager.doAttachBaseContext(base)
     }
 

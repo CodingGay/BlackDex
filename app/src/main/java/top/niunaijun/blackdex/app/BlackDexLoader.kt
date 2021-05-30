@@ -20,7 +20,7 @@ class BlackDexLoader {
 
     private var mSavePath by AppSharedPreferenceDelegate(App.getContext(), "")
 
-    private var mSaveEnable by AppSharedPreferenceDelegate(App.getContext(), false)
+    private var mSaveEnable by AppSharedPreferenceDelegate(App.getContext(), true)
 
     private var mDir = if (mSaveEnable) {
         getDexDumpDir(App.getContext())
@@ -73,7 +73,7 @@ class BlackDexLoader {
             return if (BuildCompat.isR()) {
                 val dump = File(
                     context.externalCacheDir?.parentFile?.parentFile?.parentFile?.parentFile,
-                    "hupu/dexDump"
+                    "Download/dexDump"
                 )
                 FileUtils.mkdirs(dump)
                 dump.absolutePath

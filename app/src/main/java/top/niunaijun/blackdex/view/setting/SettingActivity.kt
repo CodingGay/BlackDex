@@ -5,8 +5,9 @@ import top.niunaijun.blackdex.R
 import top.niunaijun.blackdex.databinding.ActivitySettingBinding
 import top.niunaijun.blackdex.util.inflate
 import top.niunaijun.blackdex.view.base.BaseActivity
+import top.niunaijun.blackdex.view.base.PermissionActivity
 
-class SettingActivity : BaseActivity() {
+class SettingActivity : PermissionActivity() {
 
     private val viewBinding: ActivitySettingBinding by inflate()
 
@@ -15,5 +16,10 @@ class SettingActivity : BaseActivity() {
         setContentView(viewBinding.root)
         initToolbar(viewBinding.toolbarLayout.toolbar, R.string.app_setting,true)
         supportFragmentManager.beginTransaction().replace(R.id.fragment,SettingFragment()).commit()
+    }
+
+    fun setRequestCallback(callback:((Boolean)->Unit)?){
+        this.requestPermissionCallback = callback
+        requestStoragePermission()
     }
 }

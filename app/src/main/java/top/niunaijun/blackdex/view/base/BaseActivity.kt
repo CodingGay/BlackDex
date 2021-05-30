@@ -11,7 +11,12 @@ import androidx.appcompat.widget.Toolbar
  */
 open class BaseActivity : AppCompatActivity() {
 
-    protected fun initToolbar(toolbar: Toolbar,title:Int, showBack: Boolean = false, onBack: (() -> Unit)? = null) {
+    protected fun initToolbar(
+        toolbar: Toolbar,
+        title: Int,
+        showBack: Boolean = false,
+        onBack: (() -> Unit)? = null
+    ) {
         setSupportActionBar(toolbar)
         toolbar.setTitle(title)
         if (showBack) {
@@ -20,11 +25,13 @@ open class BaseActivity : AppCompatActivity() {
                 toolbar.setNavigationOnClickListener {
                     if (onBack != null) {
                         onBack()
-                    }else{
+                    } else {
                         finish()
                     }
                 }
             }
         }
     }
+
+
 }

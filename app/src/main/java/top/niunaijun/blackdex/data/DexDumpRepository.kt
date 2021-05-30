@@ -28,7 +28,8 @@ class DexDumpRepository {
 
     fun getAppList(mAppListLiveData: MutableLiveData<List<AppInfo>>) {
 
-        val installedApplications: List<ApplicationInfo> = getPackageManager().getInstalledApplications(0)
+        val installedApplications: List<ApplicationInfo> =
+            getPackageManager().getInstalledApplications(0)
         val installedList = mutableListOf<AppInfo>()
 
         for (installedApplication in installedApplications) {
@@ -40,9 +41,9 @@ class DexDumpRepository {
 
 
             val info = AppInfo(
-                    installedApplication.loadLabel(getPackageManager()).toString(),
-                    installedApplication.packageName,
-                    installedApplication.loadIcon(getPackageManager())
+                installedApplication.loadLabel(getPackageManager()).toString(),
+                installedApplication.packageName,
+                installedApplication.loadIcon(getPackageManager())
             )
             installedList.add(info)
         }
@@ -56,30 +57,32 @@ class DexDumpRepository {
 
         val result = if (URLUtil.isValidUrl(source)) {
             BlackDexCore.get().dumpDex(Uri.parse(source))
+        } else if (source.contains("/")) {
+            BlackDexCore.get().dumpDex(File(source))
         } else {
             BlackDexCore.get().dumpDex(source)
         }
 
-        if(result){
+        if (result) {
             dumpTaskId++
             startCountdown(dexDumpLiveData)
-        }else{
+        } else {
             dexDumpLiveData.postValue(DumpInfo(DumpInfo.TIMEOUT))
         }
 
     }
 
 
-    fun dumpSuccess(){
+    fun dumpSuccess() {
         dumpTaskId++
     }
 
-    private fun startCountdown(dexDumpLiveData: MutableLiveData<DumpInfo>){
+    private fun startCountdown(dexDumpLiveData: MutableLiveData<DumpInfo>) {
         GlobalScope.launch {
             val tempId = dumpTaskId
             delay(10000)
 
-            if(tempId == dumpTaskId){
+            if (tempId == dumpTaskId) {
                 dexDumpLiveData.postValue(DumpInfo(DumpInfo.TIMEOUT))
             }
         }

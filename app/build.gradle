@@ -96,6 +96,9 @@ dependencies {
     implementation 'com.github.Ferfalk:SimpleSearchView:0.2.0'
     //searchView
 
+    implementation  'com.umeng.umsdk:common:9.3.8'
+    implementation  'com.umeng.umsdk:asms:1.2.2'
+    //友盟
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
