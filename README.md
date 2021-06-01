@@ -39,7 +39,7 @@ BlackDex下载：https://github.com/CodingGay/BlackDex/releases
 - 对抗抽取壳
 
 ## 感谢
-- [VirtualApp](https://github.com/asLody/VirtualApp)  (小声bb：虽然被干了但是还是感谢)
+- [VirtualApp](https://github.com/asLody/VirtualApp)
 - [VirtualAPK](https://github.com/didi/VirtualAPK)
 - [FreeReflection](https://github.com/tiann/FreeReflection)
 - [Dreamland](https://github.com/canyie/Dreamland)
