@@ -22,11 +22,6 @@ LOCAL_SRC_FILES := JniHook/JniHook.cpp \
                    Utils/HexDump.cpp \
                    Utils/PointerCheck.cpp \
                    IO.cpp \
-                   Substrate/hde64.c \
-                   Substrate/SubstrateDebug.cpp \
-                   Substrate/SubstrateHook.cpp \
-                   Substrate/SubstratePosixMemory.cpp \
-                   Substrate/And64InlineHook.cpp \
                    Hook/BaseHook.cpp \
                    Hook/RuntimeHook.cpp \
                    Hook/VMClassLoaderHook.cpp \
