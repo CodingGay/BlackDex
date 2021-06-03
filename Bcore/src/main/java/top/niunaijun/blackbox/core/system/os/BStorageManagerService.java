@@ -29,6 +29,9 @@ public class BStorageManagerService extends IBStorageManagerService.Stub impleme
 
     @Override
     public StorageVolume[] getVolumeList(int uid, String packageName, int flags, int userId) throws RemoteException {
+        if (reflection.android.os.storage.StorageManager.getVolumeList == null) {
+            return null;
+        }
         try {
             StorageVolume[] storageVolumes = reflection.android.os.storage.StorageManager.getVolumeList.call(BUserHandle.getUserId(Process.myUid()), 0);
             for (StorageVolume storageVolume : storageVolumes) {
