@@ -34,6 +34,8 @@ public class BStorageManagerService extends IBStorageManagerService.Stub impleme
         }
         try {
             StorageVolume[] storageVolumes = reflection.android.os.storage.StorageManager.getVolumeList.call(BUserHandle.getUserId(Process.myUid()), 0);
+            if (storageVolumes == null)
+                return null;
             for (StorageVolume storageVolume : storageVolumes) {
                 reflection.android.os.storage.StorageVolume.mPath.set(storageVolume, BEnvironment.getExternalUserDir(userId));
                 if (BuildCompat.isPie()) {
@@ -44,7 +46,7 @@ public class BStorageManagerService extends IBStorageManagerService.Stub impleme
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new StorageVolume[]{};
+        return null;
     }
 
     @Override
