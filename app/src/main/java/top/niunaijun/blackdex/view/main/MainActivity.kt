@@ -27,6 +27,7 @@ import top.niunaijun.blackdex.util.LoadingUtil
 import top.niunaijun.blackdex.util.inflate
 import top.niunaijun.blackdex.view.base.PermissionActivity
 import top.niunaijun.blackdex.view.setting.SettingActivity
+import java.io.File
 
 
 class MainActivity : PermissionActivity() {
@@ -38,6 +39,8 @@ class MainActivity : PermissionActivity() {
     private lateinit var mAdapter: MainAdapter
 
     private lateinit var loadingView: CatLoadingView
+
+    private var initialDir: File? = null
 
     private var appList: List<AppInfo> = ArrayList()
 
@@ -72,7 +75,9 @@ class MainActivity : PermissionActivity() {
             this.requestPermissionCallback = {
                 if (it) {
                     this.requestPermissionCallback = null
-                    val initialDir = Environment.getExternalStorageDirectory()
+                    if (initialDir == null) {
+                        initialDir = Environment.getExternalStorageDirectory()
+                    }
                     MaterialDialog(this).show {
                         fileChooser(
                             this@MainActivity,
@@ -80,9 +85,10 @@ class MainActivity : PermissionActivity() {
                             filter = FileUtil::filterApk,
                         ) { _, file ->
                             viewModel.startDexDump(file.absolutePath)
+                            this@MainActivity.initialDir = file.parentFile
                         }
 
-                        negativeButton(res = R.string.cancel)
+                        negativeButton(R.string.cancel)
                     }
 
                 }
@@ -117,35 +123,33 @@ class MainActivity : PermissionActivity() {
                         showLoading()
                     }
                     DumpInfo.TIMEOUT -> {
-                        loadingView.dismiss()
+                        hideLoading()
                         MaterialDialog(this).show {
-                            title(res = R.string.unpack_fail)
-                            message(res = R.string.jump_issue)
-                            negativeButton(res = R.string.github) {
-                                negativeButton(text = "Github") {
-                                    val intent = Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("https://github.com/CodingGay/BlackDex/issues")
-                                    )
-                                    startActivity(intent)
-                                }
-                                positiveButton(res = R.string.confirm)
-
+                            title(R.string.unpack_fail)
+                            message(R.string.jump_issue)
+                            negativeButton(R.string.github) {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://github.com/CodingGay/BlackDex/issues")
+                                )
+                                startActivity(intent)
                             }
+                            positiveButton(res = R.string.confirm)
+
                         }
                     }
                     else -> {
                         viewModel.dexDumpSuccess()
+                        hideLoading()
                         val title = if (it.state == DumpInfo.SUCCESS) {
-                            getString(R.string.unpack_success)
+                            R.string.unpack_success
                         } else {
-                            getString(R.string.unpack_fail)
+                            R.string.unpack_fail
                         }
-                        loadingView.dismiss()
                         MaterialDialog(this).show {
-                            title(text = title)
+                            title(title)
                             message(text = it.msg)
-                            positiveButton(res = R.string.confirm)
+                            positiveButton(R.string.confirm)
                         }
                     }
                 }
@@ -210,6 +214,12 @@ class MainActivity : PermissionActivity() {
         }
 
         LoadingUtil.showLoading(loadingView, supportFragmentManager)
+    }
+
+    private fun hideLoading() {
+        if (this::loadingView.isInitialized) {
+            loadingView.dismiss()
+        }
     }
 
     private fun hideKeyboard() {
