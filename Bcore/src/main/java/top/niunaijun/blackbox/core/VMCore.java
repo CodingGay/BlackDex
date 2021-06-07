@@ -67,6 +67,7 @@ public class VMCore {
             long cookie = cookies.get(i);
             if (cookie == 0) {
                 countDownLatch.countDown();
+                BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), atomicInteger.getAndIncrement()));
                 continue;
             }
             FileUtils.mkdirs(file);
