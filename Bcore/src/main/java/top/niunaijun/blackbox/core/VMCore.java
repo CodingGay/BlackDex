@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import dalvik.system.DexFile;
 import top.niunaijun.blackbox.BlackBoxCore;
@@ -59,8 +60,9 @@ public class VMCore {
         int availableProcessors = Runtime.getRuntime().availableProcessors();
         ExecutorService executorService = Executors.newFixedThreadPool(availableProcessors <= 0 ? 1 : availableProcessors + 1);
         CountDownLatch countDownLatch = new CountDownLatch(cookies.size());
+        AtomicInteger atomicInteger = new AtomicInteger(0);
 
-        BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), 0));
+        BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), atomicInteger.getAndIncrement()));
         for (int i = 0; i < cookies.size(); i++) {
             long cookie = cookies.get(i);
             if (cookie == 0) {
@@ -68,8 +70,7 @@ public class VMCore {
                 continue;
             }
             FileUtils.mkdirs(file);
-            int finalI = i;
-            if (i == 1) {
+            if (atomicInteger.get() == 1) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ignored) {
@@ -77,7 +78,7 @@ public class VMCore {
             }
             executorService.execute(() -> {
                 dumpDex(cookie, file.getAbsolutePath(), BlackBoxCore.get().isFixCodeItem());
-                BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), finalI + 1));
+                BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), atomicInteger.getAndIncrement()));
                 countDownLatch.countDown();
             });
         }
