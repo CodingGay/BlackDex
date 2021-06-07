@@ -212,7 +212,7 @@ public class BActivityThread extends IBActivityThread.Stub {
     private void handleDumpDex(String packageName, DumpResult result, ClassLoader classLoader) {
         new Thread(() -> {
             try {
-                Thread.sleep(500);
+                Thread.sleep(20*1000);
             } catch (InterruptedException ignored) {
             }
             try {

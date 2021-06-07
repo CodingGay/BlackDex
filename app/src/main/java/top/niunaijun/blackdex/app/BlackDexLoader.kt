@@ -21,6 +21,8 @@ class BlackDexLoader {
 
     private var mSaveEnable by AppSharedPreferenceDelegate(App.getContext(), true)
 
+    private var mFixCodeItem by AppSharedPreferenceDelegate(App.getContext(),false)
+
     private var mDir = if (mSaveEnable) {
         getDexDumpDir(App.getContext())
     } else {
@@ -42,7 +44,7 @@ class BlackDexLoader {
             }
 
             override fun isFixCodeItem(): Boolean {
-                return false
+                return mFixCodeItem
             }
         })
     }
@@ -65,6 +67,14 @@ class BlackDexLoader {
 
     fun setSavePath(path: String) {
         this.mSavePath = path
+    }
+
+    fun setFixCodeItem(enable:Boolean){
+        this.mFixCodeItem = enable
+    }
+
+    fun isFixCodeItem():Boolean{
+        return this.mFixCodeItem
     }
 
 

@@ -11,8 +11,8 @@ android {
         applicationId "top.niunaijun.blackdex"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 2
-        versionName "1.1.0"
+        versionCode 3
+        versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -91,8 +91,6 @@ dependencies {
     //dialog
     implementation 'com.github.nukc.stateview:kotlin:2.2.0'
     //状态控制控件
-    implementation 'com.roger.catloadinglibrary:catloadinglibrary:1.0.9'
-    //加载dialog
     implementation 'com.github.Ferfalk:SimpleSearchView:0.2.0'
     //searchView
 
