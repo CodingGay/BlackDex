@@ -161,7 +161,6 @@ class MainActivity : PermissionActivity() {
     private val mMonitor = object : IBDumpMonitor.Stub() {
         override fun onDump(result: DumpResult?) {
             result?.let {
-                Log.e("onDump", result.toString())
                 // 此处做进度条
                 if (result.isRunning) {
                     loadingView?.setProgress(result.currProcess, result.totalProcess)
