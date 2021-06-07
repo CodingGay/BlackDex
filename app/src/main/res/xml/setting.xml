@@ -13,7 +13,7 @@
                 android:title="@string/rewrite_file_path" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="高级选项">
+    <PreferenceCategory android:title="@string/advanced_setting">
         <SwitchPreferenceCompat
                 android:key="fix_code_item"
                 android:summary="@string/fix_code_item_desc"
