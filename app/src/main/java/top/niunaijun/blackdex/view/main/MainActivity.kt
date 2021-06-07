@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.fileChooser
 import com.ferfalk.simplesearchview.SimpleSearchView
-import com.roger.catloadinglibrary.CatLoadingView
 import com.umeng.analytics.MobclickAgent
 import top.niunaijun.blackbox.BlackDexCore
 import top.niunaijun.blackbox.core.system.dump.IBDumpMonitor
@@ -24,10 +23,10 @@ import top.niunaijun.blackdex.data.entity.DumpInfo
 import top.niunaijun.blackdex.databinding.ActivityMainBinding
 import top.niunaijun.blackdex.util.FileUtil
 import top.niunaijun.blackdex.util.InjectionUtil
-import top.niunaijun.blackdex.util.LoadingUtil
 import top.niunaijun.blackdex.util.inflate
 import top.niunaijun.blackdex.view.base.PermissionActivity
 import top.niunaijun.blackdex.view.setting.SettingActivity
+import top.niunaijun.blackdex.view.widget.ProgressDialog
 import java.io.File
 
 
@@ -39,7 +38,7 @@ class MainActivity : PermissionActivity() {
 
     private lateinit var mAdapter: MainAdapter
 
-    private lateinit var loadingView: CatLoadingView
+    private var loadingView: ProgressDialog? = null
 
     private var initialDir: File? = null
 
@@ -124,11 +123,6 @@ class MainActivity : PermissionActivity() {
                         showLoading()
                     }
                     DumpInfo.TIMEOUT -> {
-                        // 判断是否running
-                        Log.e("Tag", "isRunning ${BlackDexCore.get().isRunning}")
-                        if (BlackDexCore.get().isRunning) {
-                            return@let
-                        }
                         hideLoading()
                         MaterialDialog(this).show {
                             title(R.string.unpack_fail)
@@ -167,14 +161,13 @@ class MainActivity : PermissionActivity() {
     private val mMonitor = object : IBDumpMonitor.Stub() {
         override fun onDump(result: DumpResult?) {
             result?.let {
-                Log.e("mMonitor", "onDump: ${result.toString()}")
 
                 // 此处做进度条
                 if (result.isRunning) {
-                    val totalProcess = result.totalProcess
-                    val currProcess = result.currProcess
+                    loadingView?.setProgress(result.currProcess, result.totalProcess)
                     return
                 }
+
                 if (result.isSuccess) {
                     viewModel.mDexDumpLiveData.postValue(
                         DumpInfo(
@@ -223,17 +216,15 @@ class MainActivity : PermissionActivity() {
     }
 
     private fun showLoading() {
-        if (!this::loadingView.isInitialized) {
-            loadingView = CatLoadingView()
+        if (this.loadingView == null) {
+            loadingView = ProgressDialog()
         }
-
-        LoadingUtil.showLoading(loadingView, supportFragmentManager)
+        loadingView?.show(supportFragmentManager, "")
     }
 
     private fun hideLoading() {
-        if (this::loadingView.isInitialized) {
-            loadingView.dismiss()
-        }
+        loadingView?.dismiss()
+        loadingView = null
     }
 
     private fun hideKeyboard() {

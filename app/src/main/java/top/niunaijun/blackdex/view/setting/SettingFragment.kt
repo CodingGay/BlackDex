@@ -26,6 +26,8 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     private lateinit var saveEnablePreference: SwitchPreferenceCompat
 
+    private lateinit var fixCodeItemPreference: SwitchPreferenceCompat
+
     private val initialDirectory = AppManager.mBlackBoxLoader.getSavePath()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -37,6 +39,10 @@ class SettingFragment : PreferenceFragmentCompat() {
         saveEnablePreference = findPreference("save_enable")!!
         saveEnablePreference.onPreferenceChangeListener = mSaveEnableChange
         saveEnablePreference.isChecked = AppManager.mBlackBoxLoader.saveEnable()
+
+        fixCodeItemPreference = findPreference("fix_code_item")!!
+        fixCodeItemPreference.onPreferenceChangeListener = mFixCodeItemChange
+        fixCodeItemPreference.isChecked = AppManager.mBlackBoxLoader.isFixCodeItem()
 
     }
 
@@ -69,6 +75,27 @@ class SettingFragment : PreferenceFragmentCompat() {
         } else {
             AppManager.mBlackBoxLoader.saveEnable(true)
             saveEnablePreference.isChecked = true
+        }
+        return@OnPreferenceChangeListener true
+    }
+
+    private val mFixCodeItemChange = Preference.OnPreferenceChangeListener { _, newValue ->
+        if (newValue as Boolean) {
+
+            MaterialDialog(requireContext()).show {
+                title(R.string.warn)
+                message(R.string.fix_code_item_message)
+                positiveButton(R.string.confirm) {
+                    AppManager.mBlackBoxLoader.setFixCodeItem(true)
+                }
+                negativeButton(R.string.cancel) {
+                    fixCodeItemPreference.isChecked = false
+                    AppManager.mBlackBoxLoader.setFixCodeItem(false)
+                }
+            }
+
+        } else {
+            AppManager.mBlackBoxLoader.setFixCodeItem(newValue)
         }
         return@OnPreferenceChangeListener true
     }

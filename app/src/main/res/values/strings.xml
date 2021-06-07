@@ -23,4 +23,13 @@
     <string name="file_save">File</string>
     <string name="use_default_file">Use Default Path</string>
     <string name="rewrite_file_path">Customize the storage path</string>
+    <string name="warn">Warning</string>
+    <string name="advanced_setting">Advanced Settings</string>
+    <string name="fix_code_item">FixCodeItem</string>
+    <string name="fix_code_item_desc">Self-repair extraction instructions and restore Dex files</string>
+    <string name="fix_code_item_message">After opening, deep shelling will be carried out. Deep shelling will automatically repair the extracted commands. Please pay attention to the following changes after opening. \n\n1. The shelling time will increase significantly, and it is expected to take a few minutes to ten minutes. \n2. During the shelling, there may be application crashes (in case of anti-detection, etc.) \n3. It will increase the chance of shelling failure \n4. Not necessarily 100% reduction
+    </string>
+
+    <string name="classes_progress" translatable="false">classes.dex (%1d/%1d)</string>
+    <string name="dumping">dumping…</string>
 </resources>

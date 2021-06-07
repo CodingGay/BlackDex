@@ -12,4 +12,12 @@
                 android:key="save_path"
                 android:title="@string/rewrite_file_path" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/advanced_setting">
+        <SwitchPreferenceCompat
+                android:key="fix_code_item"
+                android:summary="@string/fix_code_item_desc"
+                android:title="@string/fix_code_item" />
+
+    </PreferenceCategory>
 </PreferenceScreen>
