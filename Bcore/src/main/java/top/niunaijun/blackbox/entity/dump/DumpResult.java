@@ -3,9 +3,6 @@ package top.niunaijun.blackbox.entity.dump;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import top.niunaijun.blackbox.entity.pm.InstallResult;
-import top.niunaijun.blackbox.utils.Slog;
-
 /**
  * Created by Milk on 2021/5/22.
  * * ∧＿∧
@@ -16,25 +13,57 @@ import top.niunaijun.blackbox.utils.Slog;
  */
 public class DumpResult implements Parcelable {
     public static final String TAG = "DumpResult";
+    private static final int STATUS_RUNNING = 0;
+    private static final int STATUS_SUCCESS = 1;
+    private static final int STATUS_FAIL = 2;
 
-    public boolean success = true;
     public String packageName;
     public String msg;
     public String dir;
 
-    public void dumpError(String msg) {
+    private int status = STATUS_RUNNING;
+    public int totalProcess;
+    public int currProcess;
+
+    public DumpResult dumpError(String msg) {
         this.msg = msg;
-        this.success = false;
-        Slog.d(TAG, msg);
+        this.status = STATUS_FAIL;
+        return this;
+    }
+
+    public DumpResult dumpProcess(int totalProcess, int currProcess) {
+        this.totalProcess = totalProcess;
+        this.currProcess = currProcess;
+        this.status = STATUS_RUNNING;
+        return this;
+    }
+
+    public DumpResult dumpSuccess() {
+        this.status = STATUS_SUCCESS;
+        return this;
+    }
+
+    public boolean isSuccess() {
+        return status == STATUS_SUCCESS;
+    }
+
+    public boolean isFail() {
+        return status == STATUS_FAIL;
+    }
+
+    public boolean isRunning() {
+        return status == STATUS_RUNNING;
     }
 
     @Override
     public String toString() {
         return "DumpResult{" +
-                "success=" + success +
-                ", packageName='" + packageName + '\'' +
+                "packageName='" + packageName + '\'' +
                 ", msg='" + msg + '\'' +
                 ", dir='" + dir + '\'' +
+                ", status=" + status +
+                ", totalProcess=" + totalProcess +
+                ", currProcess=" + currProcess +
                 '}';
     }
 
@@ -45,27 +74,33 @@ public class DumpResult implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte(this.success ? (byte) 1 : (byte) 0);
         dest.writeString(this.packageName);
         dest.writeString(this.msg);
         dest.writeString(this.dir);
+        dest.writeInt(this.status);
+        dest.writeInt(this.totalProcess);
+        dest.writeInt(this.currProcess);
     }
 
     public void readFromParcel(Parcel source) {
-        this.success = source.readByte() != 0;
         this.packageName = source.readString();
         this.msg = source.readString();
         this.dir = source.readString();
+        this.status = source.readInt();
+        this.totalProcess = source.readInt();
+        this.currProcess = source.readInt();
     }
 
     public DumpResult() {
     }
 
     protected DumpResult(Parcel in) {
-        this.success = in.readByte() != 0;
         this.packageName = in.readString();
         this.msg = in.readString();
         this.dir = in.readString();
+        this.status = in.readInt();
+        this.totalProcess = in.readInt();
+        this.currProcess = in.readInt();
     }
 
     public static final Creator<DumpResult> CREATOR = new Creator<DumpResult>() {

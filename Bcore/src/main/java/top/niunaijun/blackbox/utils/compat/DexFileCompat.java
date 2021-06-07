@@ -1,6 +1,7 @@
 package top.niunaijun.blackbox.utils.compat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import dalvik.system.DexFile;
@@ -15,6 +16,43 @@ import top.niunaijun.blackbox.utils.Reflector;
  * 此处无Bug
  */
 public class DexFileCompat {
+    public static final String TAG = "DexFileCompat";
+
+    public static List<String> getClassNameList(ClassLoader classLoader) {
+        List<String> allClass = new ArrayList<>();
+        try {
+            List<DexFile> dexFiles = getDexFiles(classLoader);
+            for (DexFile dexFile : dexFiles) {
+                Object object = Reflector.with(dexFile)
+                        .field("mCookie")
+                        .get();
+                String[] classNameList = getClassNameList(object);
+                allClass.addAll(Arrays.asList(classNameList));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allClass;
+    }
+
+    private static String[] getClassNameList(Object cookie) {
+        try {
+            String[] list;
+            if (BuildCompat.isM()) {
+                list = Reflector.on(DexFile.class)
+                        .method("getClassNameList", Object.class)
+                        .call(cookie);
+            } else {
+                list = Reflector.on(DexFile.class)
+                        .method("getClassNameList", long.class)
+                        .call(cookie);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static List<Long> getCookies(ClassLoader classLoader) {
         List<Long> cookies = new ArrayList<>();

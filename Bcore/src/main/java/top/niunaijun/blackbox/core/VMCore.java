@@ -1,17 +1,26 @@
 package top.niunaijun.blackbox.core;
 
+import android.util.Log;
 
 import androidx.annotation.Keep;
 
 import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import dalvik.system.DexFile;
 import top.niunaijun.blackbox.BlackBoxCore;
+import top.niunaijun.blackbox.app.BActivityThread;
+import top.niunaijun.blackbox.entity.dump.DumpResult;
+import top.niunaijun.blackbox.utils.DexUtils;
 import top.niunaijun.blackbox.utils.FileUtils;
 import top.niunaijun.blackbox.utils.Reflector;
 import top.niunaijun.blackbox.utils.compat.DexFileCompat;
+import top.niunaijun.jnihook.MethodUtils;
 
 import static top.niunaijun.blackbox.core.env.BEnvironment.EMPTY_JAR;
 
@@ -28,15 +37,7 @@ public class VMCore {
 
     static {
         new File("");
-        if (BlackBoxCore.is64Bit()) {
-            try {
-                System.loadLibrary("vm64");
-            } catch (Throwable e) {
-                System.loadLibrary("vm");
-            }
-        } else {
-            System.loadLibrary("vm");
-        }
+        System.loadLibrary("blackdex");
     }
 
     public static native void init(int apiLevel);
@@ -47,16 +48,50 @@ public class VMCore {
 
     public static native void hideXposed();
 
-    private static native void dumpDex(long cookie, String dir);
+    private static native void dumpDex(long cookie, String dir, boolean fixMethod);
 
     public static void dumpDex(ClassLoader classLoader, String packageName) {
         List<Long> cookies = DexFileCompat.getCookies(classLoader);
-        for (Long cookie : cookies) {
-            if (cookie == 0)
+        File file = new File(BlackBoxCore.get().getDexDumpDir(), packageName);
+        DumpResult result = new DumpResult();
+        result.dir = file.getAbsolutePath();
+        result.packageName = packageName;
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        ExecutorService executorService = Executors.newFixedThreadPool(availableProcessors <= 0 ? 1 : availableProcessors + 1);
+        CountDownLatch countDownLatch = new CountDownLatch(cookies.size());
+
+        BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), 0));
+        for (int i = 0; i < cookies.size(); i++) {
+            long cookie = cookies.get(i);
+            if (cookie == 0) {
+                countDownLatch.countDown();
                 continue;
-            File file = new File(BlackBoxCore.get().getDexDumpDir(), packageName);
+            }
             FileUtils.mkdirs(file);
-            dumpDex(cookie, file.getAbsolutePath());
+            int finalI = i;
+            if (i == 1) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignored) {
+                }
+            }
+            executorService.execute(() -> {
+                dumpDex(cookie, file.getAbsolutePath(), BlackBoxCore.get().isFixCodeItem());
+                BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), finalI + 1));
+                countDownLatch.countDown();
+            });
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException ignored) {
+        }
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File dex : files) {
+                if (dex.isFile() && dex.getAbsolutePath().endsWith(".dex")) {
+                    DexUtils.fixDex(dex);
+                }
+            }
         }
     }
 
@@ -97,5 +132,41 @@ public class VMCore {
             e.printStackTrace();
         }
         return new long[]{};
+    }
+
+    @Keep
+    public static Object findMethod(String className, String methodName, String signature) {
+        try {
+            className = className.replace("/", ".");
+            if (className.startsWith("L")) {
+                className = className.substring(1);
+            }
+            if (className.endsWith(";")) {
+                className = className.substring(0, className.length() - 1);
+            }
+            ClassLoader classLoader = BActivityThread.getApplication().getClassLoader();
+            Class<?> aClass = classLoader.loadClass(className);
+            if ("<init>".equals(methodName)) {
+                Constructor<?>[] constructors = aClass.getDeclaredConstructors();
+                for (Constructor<?> constructor : constructors) {
+                    String desc = MethodUtils.getDesc(constructor);
+                    if (signature.equals(desc)) {
+                        return constructor;
+                    }
+                }
+            }
+
+            Method[] declaredMethods = aClass.getDeclaredMethods();
+            for (Method declaredMethod : declaredMethods) {
+                if (declaredMethod.getName().equals(methodName)) {
+                    String desc = MethodUtils.getDesc(declaredMethod);
+                    if (desc.equals(signature)) {
+                        return declaredMethod;
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+        return null;
     }
 }

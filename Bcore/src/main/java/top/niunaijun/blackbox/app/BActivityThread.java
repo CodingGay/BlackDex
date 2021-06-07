@@ -13,8 +13,11 @@ import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -188,6 +191,7 @@ public class BActivityThread extends IBActivityThread.Stub {
                 e.printStackTrace();
             }
             mInitialApplication = application;
+            ActivityThread.mInitialApplication.set(BlackBoxCore.mainThread(), mInitialApplication);
             if (Objects.equals(packageName, processName)) {
                 ClassLoader loader;
                 if (application == null) {
@@ -199,9 +203,8 @@ public class BActivityThread extends IBActivityThread.Stub {
             }
         } catch (Throwable e) {
             e.printStackTrace();
-            result.dumpError(e.getMessage());
             mAppConfig = null;
-            BlackBoxCore.getBDumpManager().noticeMonitor(result);
+            BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpError(e.getMessage()));
             BlackBoxCore.get().uninstallPackage(packageName);
         }
     }
@@ -218,9 +221,10 @@ public class BActivityThread extends IBActivityThread.Stub {
                 mAppConfig = null;
                 File dir = new File(result.dir);
                 if (!dir.exists() || dir.listFiles().length == 0) {
-                    result.dumpError("not found dex file");
+                    BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpError("not found dex file"));
+                } else {
+                    BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpSuccess());
                 }
-                BlackBoxCore.getBDumpManager().noticeMonitor(result);
                 BlackBoxCore.get().uninstallPackage(packageName);
             }
         }).start();

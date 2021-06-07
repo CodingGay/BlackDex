@@ -50,7 +50,7 @@ import top.niunaijun.blackbox.core.system.ServiceManager;
 @SuppressLint("StaticFieldLeak")
 public class BlackBoxCore extends ClientConfiguration {
     public static final String TAG = "BlackBoxCore";
-    private static final int USER_ID = 0;
+    public static final int USER_ID = 0;
 
     private static final BlackBoxCore sBlackBoxCore = new BlackBoxCore();
     private static Context sContext;
@@ -236,6 +236,11 @@ public class BlackBoxCore extends ClientConfiguration {
     @Override
     public String getDexDumpDir() {
         return mClientConfiguration.getDexDumpDir();
+    }
+
+    @Override
+    public boolean isFixCodeItem() {
+        return mClientConfiguration.isFixCodeItem();
     }
 
     private void startLogcat() {

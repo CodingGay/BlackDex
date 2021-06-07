@@ -40,6 +40,10 @@ class BlackDexLoader {
             override fun getDexDumpDir(): String {
                 return mDir
             }
+
+            override fun isFixCodeItem(): Boolean {
+                return false
+            }
         })
     }
 

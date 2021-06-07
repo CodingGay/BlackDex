@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -123,6 +124,11 @@ class MainActivity : PermissionActivity() {
                         showLoading()
                     }
                     DumpInfo.TIMEOUT -> {
+                        // 判断是否running
+                        Log.e("Tag", "isRunning ${BlackDexCore.get().isRunning}")
+                        if (BlackDexCore.get().isRunning) {
+                            return@let
+                        }
                         hideLoading()
                         MaterialDialog(this).show {
                             title(R.string.unpack_fail)
@@ -161,7 +167,15 @@ class MainActivity : PermissionActivity() {
     private val mMonitor = object : IBDumpMonitor.Stub() {
         override fun onDump(result: DumpResult?) {
             result?.let {
-                if (result.success) {
+                Log.e("mMonitor", "onDump: ${result.toString()}")
+
+                // 此处做进度条
+                if (result.isRunning) {
+                    val totalProcess = result.totalProcess
+                    val currProcess = result.currProcess
+                    return
+                }
+                if (result.isSuccess) {
                     viewModel.mDexDumpLiveData.postValue(
                         DumpInfo(
                             DumpInfo.SUCCESS,
