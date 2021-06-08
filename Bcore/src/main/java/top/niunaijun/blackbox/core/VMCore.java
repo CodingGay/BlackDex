@@ -1,7 +1,5 @@
 package top.niunaijun.blackbox.core;
 
-import android.util.Log;
-
 import androidx.annotation.Keep;
 
 import java.io.File;
@@ -58,7 +56,7 @@ public class VMCore {
         result.dir = file.getAbsolutePath();
         result.packageName = packageName;
         int availableProcessors = Runtime.getRuntime().availableProcessors();
-        ExecutorService executorService = Executors.newFixedThreadPool(availableProcessors <= 0 ? 1 : availableProcessors + 1);
+        ExecutorService executorService = Executors.newFixedThreadPool(availableProcessors <= 0 ? 1 : availableProcessors);
         CountDownLatch countDownLatch = new CountDownLatch(cookies.size());
         AtomicInteger atomicInteger = new AtomicInteger(0);
 
@@ -147,7 +145,7 @@ public class VMCore {
                 className = className.substring(0, className.length() - 1);
             }
             ClassLoader classLoader = BActivityThread.getApplication().getClassLoader();
-            Class<?> aClass = classLoader.loadClass(className);
+            Class<?> aClass = Class.forName(className, false, classLoader);
             if ("<init>".equals(methodName)) {
                 Constructor<?>[] constructors = aClass.getDeclaredConstructors();
                 for (Constructor<?> constructor : constructors) {

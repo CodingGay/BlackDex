@@ -82,8 +82,6 @@ void fixCodeItem(JNIEnv *env, const art_lkchan::DexFile *dex_file_, size_t begin
             art_lkchan::ClassDataItemIterator cdit(*dex_file_, class_data);
             cdit.SkipAllFields();
             while (cdit.HasNextMethod()) {
-                if (cdit.GetMemberIndex() > dex_file_->NumMethodIds())
-                    continue;
                 const art_lkchan::DexFile::MethodId &method_id_item = dex_file_->GetMethodId(
                         cdit.GetMemberIndex());
                 auto method_name = dex_file_->GetMethodName(method_id_item);
