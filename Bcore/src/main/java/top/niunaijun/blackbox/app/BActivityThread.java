@@ -14,10 +14,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +29,7 @@ import top.niunaijun.blackbox.core.VMCore;
 import top.niunaijun.blackbox.entity.AppConfig;
 import top.niunaijun.blackbox.core.IOCore;
 import top.niunaijun.blackbox.entity.dump.DumpResult;
+import top.niunaijun.blackbox.utils.FileUtils;
 import top.niunaijun.blackbox.utils.Slog;
 import top.niunaijun.blackbox.BlackBoxCore;
 
@@ -163,6 +162,10 @@ public class BActivityThread extends IBActivityThread.Stub {
             // fix applicationInfo
             LoadedApk.mApplicationInfo.set(loadedApk, applicationInfo);
 
+            // clear dump file
+            FileUtils.deleteDir(new File(BlackBoxCore.get().getDexDumpDir(), packageName));
+
+            // init vmCore
             VMCore.init(Build.VERSION.SDK_INT);
             assert packageContext != null;
             IOCore.get().enableRedirect(packageContext);
@@ -185,6 +188,7 @@ public class BActivityThread extends IBActivityThread.Stub {
             Application application = null;
             BlackBoxCore.get().getAppLifecycleCallback().beforeCreateApplication(packageName, processName, packageContext);
             try {
+                ClassLoader call = LoadedApk.getClassloader.call(loadedApk);
                 application = LoadedApk.makeApplication.call(loadedApk, false, null);
             } catch (Throwable e) {
                 Slog.e(TAG, "Unable to makeApplication");
@@ -216,7 +220,7 @@ public class BActivityThread extends IBActivityThread.Stub {
             } catch (InterruptedException ignored) {
             }
             try {
-                VMCore.dumpDex(classLoader, packageName);
+                VMCore.cookieDumpDex(classLoader, packageName);
             } finally {
                 mAppConfig = null;
                 File dir = new File(result.dir);

@@ -182,16 +182,21 @@ void enableIO(JNIEnv *env, jclass clazz) {
     nativeHook(env);
 }
 
-void dumpDex(JNIEnv *env, jclass clazz, jlong cookie, jstring dir, jboolean fixCodeItem) {
-    DexDump::dumpDex(env, cookie, dir, fixCodeItem);
+void hookDumpDex(JNIEnv *env, jobject clazz, jstring dir) {
+    DexDump::hookDumpDex(env, dir);
+}
+
+void cookieDumpDex(JNIEnv *env, jclass clazz, jlong cookie, jstring dir, jboolean fixCodeItem) {
+    DexDump::cookieDumpDex(env, cookie, dir, fixCodeItem);
 }
 
 static JNINativeMethod gMethods[] = {
-        {"hideXposed", "()V",                                     (void *) hideXposed},
-        {"addIORule",  "(Ljava/lang/String;Ljava/lang/String;)V", (void *) addIORule},
-        {"enableIO",   "()V",                                     (void *) enableIO},
-        {"init",       "(I)V",                                    (void *) init},
-        {"dumpDex",    "(JLjava/lang/String;Z)V",                 (void *) dumpDex},
+        {"hideXposed",      "()V",                                     (void *) hideXposed},
+        {"addIORule",       "(Ljava/lang/String;Ljava/lang/String;)V", (void *) addIORule},
+        {"enableIO",        "()V",                                     (void *) enableIO},
+        {"init",            "(I)V",                                    (void *) init},
+        {"hookDumpDex",     "(Ljava/lang/String;)V",                   (void *) hookDumpDex},
+        {"cookieDumpDex",   "(JLjava/lang/String;Z)V",                 (void *) cookieDumpDex},
 };
 
 int registerNativeMethods(JNIEnv *env, const char *className,

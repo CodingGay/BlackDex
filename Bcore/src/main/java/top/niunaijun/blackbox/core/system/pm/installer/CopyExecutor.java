@@ -1,9 +1,12 @@
 package top.niunaijun.blackbox.core.system.pm.installer;
 
 
+import android.content.pm.ApplicationInfo;
+
 import java.io.File;
 import java.io.IOException;
 
+import top.niunaijun.blackbox.BlackBoxCore;
 import top.niunaijun.blackbox.core.env.BEnvironment;
 import top.niunaijun.blackbox.entity.pm.InstallOption;
 import top.niunaijun.blackbox.core.system.pm.BPackageSettings;
@@ -25,6 +28,12 @@ public class CopyExecutor implements Executor {
     public int exec(BPackageSettings ps, InstallOption option, int userId) {
         try {
             NativeUtils.copyNativeLib(new File(ps.pkg.baseCodePath), BEnvironment.getAppLibDir(ps.pkg.packageName));
+            ApplicationInfo applicationInfo = BlackBoxCore.getContext().getApplicationInfo();
+            FileUtils.copyFile(new File(applicationInfo.nativeLibraryDir, "libblackdex.so"),
+                    new File(BEnvironment.getAppLibDir(ps.pkg.packageName), "libblackdex.so"));
+
+            FileUtils.copyFile(new File(applicationInfo.nativeLibraryDir, "libblackdex_d.so"),
+                    new File(BEnvironment.getAppLibDir(ps.pkg.packageName), "libblackdex_d.so"));
         } catch (Exception e) {
             e.printStackTrace();
             return -1;

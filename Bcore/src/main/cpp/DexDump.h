@@ -12,7 +12,8 @@
 
 class DexDump {
 public:
-    static void dumpDex(JNIEnv *env, jlong cookie, jstring dir, jboolean fix);
+    static void hookDumpDex(JNIEnv *env, jstring dir);
+    static void cookieDumpDex(JNIEnv *env, jlong cookie, jstring dir, jboolean fix);
 };
 
 

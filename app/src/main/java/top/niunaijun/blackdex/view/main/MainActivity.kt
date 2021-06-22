@@ -135,7 +135,6 @@ class MainActivity : PermissionActivity() {
                                 startActivity(intent)
                             }
                             positiveButton(res = R.string.confirm)
-
                         }
                     }
                     else -> {

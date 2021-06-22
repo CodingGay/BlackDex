@@ -1,5 +1,7 @@
 package top.niunaijun.blackbox.core;
 
+import android.util.Log;
+
 import androidx.annotation.Keep;
 
 import java.io.File;
@@ -17,7 +19,6 @@ import top.niunaijun.blackbox.app.BActivityThread;
 import top.niunaijun.blackbox.entity.dump.DumpResult;
 import top.niunaijun.blackbox.utils.DexUtils;
 import top.niunaijun.blackbox.utils.FileUtils;
-import top.niunaijun.blackbox.utils.Reflector;
 import top.niunaijun.blackbox.utils.compat.DexFileCompat;
 import top.niunaijun.jnihook.MethodUtils;
 
@@ -47,11 +48,14 @@ public class VMCore {
 
     public static native void hideXposed();
 
-    private static native void dumpDex(long cookie, String dir, boolean fixMethod);
+    private static native void cookieDumpDex(long cookie, String dir, boolean fixMethod);
 
-    public static void dumpDex(ClassLoader classLoader, String packageName) {
+    private static native void hookDumpDex(String dir);
+
+    public static void cookieDumpDex(ClassLoader classLoader, String packageName) {
         List<Long> cookies = DexFileCompat.getCookies(classLoader);
         File file = new File(BlackBoxCore.get().getDexDumpDir(), packageName);
+
         DumpResult result = new DumpResult();
         result.dir = file.getAbsolutePath();
         result.packageName = packageName;
@@ -76,7 +80,7 @@ public class VMCore {
                 }
             }
             executorService.execute(() -> {
-                dumpDex(cookie, file.getAbsolutePath(), BlackBoxCore.get().isFixCodeItem());
+                cookieDumpDex(cookie, file.getAbsolutePath(), BlackBoxCore.get().isFixCodeItem());
                 BlackBoxCore.getBDumpManager().noticeMonitor(result.dumpProcess(cookies.size(), atomicInteger.getAndIncrement()));
                 countDownLatch.countDown();
             });

@@ -20,6 +20,7 @@ public class BEnvironment {
 
     public static File JUNIT_JAR = new File(getCacheDir(), "junit.jar");
     public static File EMPTY_JAR = new File(getCacheDir(), "empty.jar");
+    public static File VM_JAR = new File(getCacheDir(), "vm.jar");
 
     public static void load() {
         FileUtils.mkdirs(sVirtualRoot);

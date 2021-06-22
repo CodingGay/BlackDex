@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.5)
+project(test_dobby)
+
+set(PrimaryPath ..)
+
+include(${PrimaryPath}/cmake/Globals.cmake)
+include(${PrimaryPath}/cmake/Macros.cmake)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
+enable_language(ASM)
+
+
+include_directories(
+    ${PrimaryPath}/tests
+    ${PrimaryPath}/source
+)
+
+include_directories(
+  ${PrimaryPath}/source
+  ${PrimaryPath}/source/UserMode
+  ${PrimaryPath}/external
+  ${PrimaryPath}/external/logging
+  ${PrimaryPath}/external/xnucxx
+)
+
+add_subdirectory(${PrimaryPath} dobby.out)
+
+add_executable(tests_instr_relo_x64
+    ${PrimaryPath}/source/InstructionRelocation/x64/X64IPRelativeOpcodeTable.cc
+    ${PrimaryPath}/tests/InstructionRelocation/x64/test_x64_instruction_relocation.cc
+)
+
+add_executable(tests_instr_relo_aarch64
+    ${PrimaryPath}/tests/InstructionRelocation/aarch64/test_aarch64_instruction_relocation.cc
+)
+target_link_libraries(tests_instr_relo_aarch64
+    dobby
+)

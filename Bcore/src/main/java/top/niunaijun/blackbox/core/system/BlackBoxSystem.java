@@ -21,6 +21,7 @@ import top.niunaijun.blackbox.utils.FileUtils;
 
 import static top.niunaijun.blackbox.core.env.BEnvironment.EMPTY_JAR;
 import static top.niunaijun.blackbox.core.env.BEnvironment.JUNIT_JAR;
+import static top.niunaijun.blackbox.core.env.BEnvironment.VM_JAR;
 
 /**
  * Created by Milk on 4/22/21.
@@ -73,6 +74,9 @@ public class BlackBoxSystem {
 
             InputStream empty = BlackBoxCore.getContext().getAssets().open("empty.jar");
             FileUtils.copyFile(empty, EMPTY_JAR);
+
+            InputStream vm = BlackBoxCore.getContext().getAssets().open("vm.jar");
+            FileUtils.copyFile(vm, VM_JAR);
         } catch (IOException e) {
             e.printStackTrace();
         }

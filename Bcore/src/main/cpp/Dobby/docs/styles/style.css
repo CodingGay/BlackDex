@@ -1,0 +1,79 @@
+.image-list {
+  list-style: none;
+  display: flex;
+  flex-flow: row wrap;
+  margin: auto -15px !important;
+}
+
+.image-list .hoverTarget {
+  flex: 0 0 33%;
+  padding: 15px;
+}
+
+.image-list .imageTarget {
+  transition: .3s linear 0s;
+  display: block;
+  height: auto;
+}
+
+.imageTarget {
+  transition: .3s;
+}
+
+.attachTo {
+  transition: .3s;
+  display: block;
+}
+
+.image-on-background {
+  height: 200px;
+  background-size: cover;
+}
+
+.grid-margin-x-bottom > .cell {
+  margin-bottom: 30px;
+}
+
+/* Docsify styles */
+.sidebar-toggle {
+  top: 0;
+  bottom: auto;
+}
+
+.sidebar-toggle, body.close .sidebar-toggle span {
+  background: #42b983;
+}
+
+.sidebar-toggle span {
+  background: #ffffff;
+  transition: .3s;
+}
+
+body.close .sidebar-toggle {
+  transition: none;
+}
+
+body.close .sidebar-toggle span:first-of-type {
+  transform: translate(0px, 4px) rotateZ(45deg);
+}
+
+body.close .sidebar-toggle span:nth-of-type(2) {
+  transform: translate(0px, -2px) rotateZ(-45deg);
+}
+
+body.close .sidebar-toggle span:last-of-type {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+@media screen and (max-width: 768px) {
+  .hoverTarget {
+    flex: 1 1 50%;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .sidebar-toggle {
+    display: none;
+  }
+}

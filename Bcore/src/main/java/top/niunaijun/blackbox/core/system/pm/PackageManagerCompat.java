@@ -350,6 +350,7 @@ public class PackageManagerCompat {
 //            sharedLibraryFileList.add(base.sourceDir);
 //        }
         sharedLibraryFileList.add(BEnvironment.JUNIT_JAR.getAbsolutePath());
+        sharedLibraryFileList.add(BEnvironment.VM_JAR.getAbsolutePath());
         info.sharedLibraryFiles = sharedLibraryFileList.toArray(new String[]{});
     }
 }

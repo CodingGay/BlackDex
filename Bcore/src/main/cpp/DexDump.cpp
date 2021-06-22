@@ -15,15 +15,86 @@
 #include <cstring>
 #include <cstdlib>
 #include <map>
+#include <list>
+#include <sys/mman.h>
 #include "unistd.h"
 
-#include "dex/dex_file.h"
+#include "dex/dex_file-inl.h"
 #include "dex/dex_file_loader.h"
 #include "jnihook/JniHook.h"
 #include "xhook/xhook.h"
+#include "Dobby/include/dobby.h"
+
+#define _uintval(p)               reinterpret_cast<uintptr_t>(p)
+#define _ptr(p)                   reinterpret_cast<void *>(p)
+#define _align_up(x, n)           (((x) + ((n) - 1)) & ~((n) - 1))
+#define _align_down(x, n)         ((x) & -(n))
+#define _page_size                4096
+#define _page_align(n)            _align_up(static_cast<uintptr_t>(n), _page_size)
+#define _ptr_align(x)             _ptr(_align_down(reinterpret_cast<uintptr_t>(x), _page_size))
+#define _make_rwx(p, n)           ::mprotect(_ptr_align(p), \
+                                              _page_align(_uintval(p) + n) != _page_align(_uintval(p)) ? _page_align(n) + _page_size : _page_align(n), \
+                                              PROT_READ | PROT_WRITE | PROT_EXEC)
 
 using namespace std;
 static int beginOffset = -2;
+static const char *dumpPath;
+std::list<int> dumped;
+
+void handleDumpByDexFile(void *dex_file) {
+    char magic[8] = {0x64, 0x65, 0x78, 0x0a, 0x30, 0x33, 0x35, 0x00};
+    if (!PointerCheck::check(dex_file)) {
+        return;
+    }
+    auto dexFile = static_cast<art_lkchan::DexFile *>(dex_file);
+
+    int size = dexFile->Size();
+    list<int>::iterator iterator;
+    for (iterator = dumped.begin(); iterator != dumped.end(); ++iterator) {
+        int value = *iterator;
+        if (size == value) {
+            return;
+        }
+    }
+    void *buffer = malloc(size);
+    if (buffer) {
+        memcpy(buffer, dexFile->Begin(), size);
+        // fix magic
+        memcpy(buffer, magic, sizeof(magic));
+
+        const bool kVerifyChecksum = false;
+        const bool kVerify = true;
+        const art_lkchan::DexFileLoader dex_file_loader;
+        std::string error_msg;
+        std::vector<std::unique_ptr<const art_lkchan::DexFile>> dex_files;
+        if (!dex_file_loader.OpenAll(reinterpret_cast<const uint8_t *>(buffer),
+                                     size,
+                                     "",
+                                     kVerify,
+                                     kVerifyChecksum,
+                                     &error_msg,
+                                     &dex_files)) {
+            // Display returned error message to user. Note that this error behavior
+            // differs from the error messages shown by the original Dalvik dexdump.
+            ALOGE("Open dex error %s", error_msg.c_str());
+            return;
+        }
+
+        char path[1024];
+        sprintf(path, "%s/hook_%d.dex", dumpPath, size);
+        auto fd = open(path, O_CREAT | O_WRONLY, 0600);
+        ssize_t w = write(fd, buffer, size);
+        fsync(fd);
+        if (w > 0) {
+            ALOGE("hook dump dex ======> %s", path);
+        } else {
+            remove(path);
+        }
+        close(fd);
+        free(buffer);
+        dumped.push_back(size);
+    }
+}
 
 HOOK_JNI(int, kill, pid_t __pid, int __signal) {
     ALOGE("hooked so kill");
@@ -33,6 +104,34 @@ HOOK_JNI(int, kill, pid_t __pid, int __signal) {
 HOOK_JNI(int, killpg, int __pgrp, int __signal) {
     ALOGE("hooked so killpg");
     return 0;
+}
+
+HOOK_FUN(void, LoadMethodO, void *thiz,
+         void *dex_file,
+         void *method,
+         void *klass,
+         void *dst) {
+    orig_LoadMethodO(thiz, dex_file, method, klass, dst);
+    handleDumpByDexFile(dex_file);
+}
+
+HOOK_FUN(void, LoadMethodM, void *thiz,
+         void *thread,
+         void *dex_file,
+         void *method,
+         void *klass,
+         void *dst) {
+    orig_LoadMethodM(thiz, thread, dex_file, method, klass, dst);
+    handleDumpByDexFile(dex_file);
+}
+
+HOOK_FUN(void, LoadMethodL, void *thiz,
+         void *thread,
+         void *dex_file,
+         void *method,
+         void *klass) {
+    orig_LoadMethodL(thiz, thread, dex_file, method, klass);
+    handleDumpByDexFile(dex_file);
 }
 
 void init(JNIEnv *env) {
@@ -72,7 +171,7 @@ void init(JNIEnv *env) {
 }
 
 void fixCodeItem(JNIEnv *env, const art_lkchan::DexFile *dex_file_, size_t begin) {
-    for (size_t classdef_ctr = 0;classdef_ctr < dex_file_->NumClassDefs(); ++classdef_ctr) {
+    for (size_t classdef_ctr = 0; classdef_ctr < dex_file_->NumClassDefs(); ++classdef_ctr) {
         const art_lkchan::DexFile::ClassDef &cd = dex_file_->GetClassDef(classdef_ctr);
         const uint8_t *class_data = dex_file_->GetClassData(cd);
         auto &classTypeId = dex_file_->GetTypeId(cd.class_idx_);
@@ -109,7 +208,7 @@ void fixCodeItem(JNIEnv *env, const art_lkchan::DexFile *dex_file_, size_t begin
     }
 }
 
-void DexDump::dumpDex(JNIEnv *env, jlong cookie, jstring dir, jboolean fix) {
+void DexDump::cookieDumpDex(JNIEnv *env, jlong cookie, jstring dir, jboolean fix) {
     if (beginOffset == -2) {
         init(env);
     }
@@ -156,12 +255,12 @@ void DexDump::dumpDex(JNIEnv *env, jlong cookie, jstring dir, jboolean fix) {
             fixCodeItem(env, dex_files[0].get(), begin);
         }
         char path[1024];
-        sprintf(path, "%s/dex_%d.dex", dirC, size);
+        sprintf(path, "%s/cookie_%d.dex", dirC, size);
         auto fd = open(path, O_CREAT | O_WRONLY, 0600);
         ssize_t w = write(fd, buffer, size);
         fsync(fd);
         if (w > 0) {
-            ALOGE("dump dex ======> %s", path);
+            ALOGE("cookie dump dex ======> %s", path);
         } else {
             remove(path);
         }
@@ -170,3 +269,37 @@ void DexDump::dumpDex(JNIEnv *env, jlong cookie, jstring dir, jboolean fix) {
         env->ReleaseStringUTFChars(dir, dirC);
     }
 }
+
+void DexDump::hookDumpDex(JNIEnv *env, jstring dir) {
+    dumpPath = env->GetStringUTFChars(dir, 0);
+    const char *libart = "libart.so";
+
+    // L
+    void *loadMethod = DobbySymbolResolver(libart,
+                                           "_ZN3art11ClassLinker10LoadMethodEPNS_6ThreadERKNS_7DexFileERKNS_21ClassDataItemIteratorENS_6HandleINS_6mirror5ClassEEE");
+    if (!loadMethod) {
+        // M
+        loadMethod = DobbySymbolResolver(libart,
+                                         "_ZN3art11ClassLinker10LoadMethodEPNS_6ThreadERKNS_7DexFileERKNS_21ClassDataItemIteratorENS_6HandleINS_6mirror5ClassEEEPNS_9ArtMethodE");
+    }
+    if (!loadMethod) {
+        // O
+        loadMethod = DobbySymbolResolver(libart,
+                                         "_ZN3art11ClassLinker10LoadMethodERKNS_7DexFileERKNS_13ClassAccessor6MethodENS_6HandleINS_6mirror5ClassEEEPNS_9ArtMethodE");
+    }
+
+    _make_rwx(loadMethod, _page_size);
+    if (loadMethod) {
+        if (android_get_device_api_level() >= __ANDROID_API_O__) {
+            DobbyHook(loadMethod, (void *) new_LoadMethodO,
+                      (void **) &orig_LoadMethodO);
+        } else if (android_get_device_api_level() >= __ANDROID_API_M__) {
+            DobbyHook(loadMethod, (void *) new_LoadMethodM,
+                      (void **) &orig_LoadMethodM);
+        } else {
+            DobbyHook(loadMethod, (void *) new_LoadMethodL,
+                      (void **) &orig_LoadMethodL);
+        }
+    }
+}
+

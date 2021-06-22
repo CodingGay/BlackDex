@@ -8,12 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import reflection.android.app.ActivityThread;
 import top.niunaijun.blackbox.BlackBoxCore;
+import top.niunaijun.blackbox.core.VMCore;
 import top.niunaijun.blackbox.fake.hook.HookManager;
 import top.niunaijun.blackbox.fake.hook.IInjectHook;
+import top.niunaijun.blackbox.utils.FileUtils;
 import top.niunaijun.blackbox.utils.compat.ContextCompat;
 import top.niunaijun.blackbox.fake.service.HCallbackProxy;
 
@@ -96,6 +100,16 @@ public final class AppInstrumentation extends BaseInstrumentationDelegate implem
     @Override
     public Application newApplication(ClassLoader cl, String className, Context context) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         ContextCompat.fix(context);
+        String absolutePath = new File(BlackBoxCore.get().getDexDumpDir(), context.getPackageName()).getAbsolutePath();
+        FileUtils.mkdirs(absolutePath);
+        Class<?> aClass = cl.loadClass(VMCore.class.getName());
+        try {
+            Method initDumpDex = aClass.getDeclaredMethod("hookDumpDex", String.class);
+            initDumpDex.setAccessible(true);
+            initDumpDex.invoke(null, absolutePath);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         return super.newApplication(cl, className, context);
     }
 
