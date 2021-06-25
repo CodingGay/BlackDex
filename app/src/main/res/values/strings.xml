@@ -4,32 +4,32 @@
     <string name="log">Logcat</string>
     <string name="open_source">Open Source</string>
     <string name="app_setting">Setting</string>
-    <string name="unpack_success">Unpack Success</string>
-    <string name="unpack_fail">Unpack Fail</string>
+    <string name="unpack_success">Unpack successfully</string>
+    <string name="unpack_fail">Unpack failed</string>
     <string name="confirm">Confirm</string>
     <string name="github">Github</string>
-    <string name="jump_issue">Unknown Error，This may be an incompatibility or may have an environmental detection that causes the failure,You can jump to GitHub(https://github.com/CodingGay/BlackDex)open Issue</string>
+    <string name="jump_issue">Unknown error，may be the app is incompatible or may have an environment detection that causes the failure, You can open an Issue on GitHub(https://github.com/CodingGay/BlackDex).</string>
     <string name="cancel">Cancel</string>
-    <string name="dex_save">.dex file save in: %1$s</string>
+    <string name="dex_save">.dex files were saved in: %1$s</string>
     <string name="error_msg">Error: %1$s</string>
-    <string name="grant_permission">Grant Permission</string>
+    <string name="grant_permission">Permission Required</string>
     <string name="request_again">Again</string>
     <string name="request_later">Later</string>
-    <string name="jump_grant">Grant</string>
-    <string name="request_fail">Grant Fail</string>
-    <string name="denied_msg">Denying permission to read and write to local files will disable this feature</string>
-    <string name="request_storage_msg">This function requires you to grant the software the permission to read and write all files to run normally</string>
+    <string name="jump_grant">Grant Permission</string>
+    <string name="request_fail">Grant permission failed.</string>
+    <string name="denied_msg">Deny app permission to read and write local files will disable this feature.</string>
+    <string name="request_storage_msg">This app can not read and write local files correctly without the required permission.</string>
 
     <string name="file_save">File</string>
-    <string name="use_default_file">Use Default Path</string>
+    <string name="use_default_file">Use default storage path</string>
     <string name="rewrite_file_path">Customize the storage path</string>
     <string name="warn">Warning</string>
     <string name="advanced_setting">Advanced Settings</string>
-    <string name="fix_code_item">FixCodeItem</string>
-    <string name="fix_code_item_desc">Self-repair extraction instructions and restore Dex files</string>
-    <string name="fix_code_item_message">After opening, deep shelling will be carried out. Deep shelling will automatically repair the extracted commands. Please pay attention to the following changes after opening. \n\n1. The shelling time will increase significantly, and it is expected to take a few minutes to ten minutes. \n2. During the shelling, there may be application crashes (in case of anti-detection, etc.) \n3. It will increase the chance of shelling failure \n4. Not necessarily 100% reduction
+    <string name="fix_code_item">Deep Unpacking</string>
+    <string name="fix_code_item_desc">Load the instructions which were extracted in memory, and restore them into DexFile.</string>
+    <string name="fix_code_item_message">BlackDex will fix the DexCode in deep unpacking mode. It is possible that following cases will occur \n\n1.BlackDex will take more time to unpack an app, it expected to take a few minutes or more. \n2.The target application is possible to crash when BlackDex is unpacking it(Environment detection, etc). \n3.The failure rate of unpacking will be increased. \n4.It may not always fix all methods successfully.
     </string>
 
     <string name="classes_progress" translatable="false">classes.dex (%1d/%1d)</string>
-    <string name="dumping">dumping…</string>
+    <string name="dumping">Unpacking…</string>
 </resources>

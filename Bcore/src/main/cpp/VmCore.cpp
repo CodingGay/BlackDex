@@ -144,7 +144,7 @@ JavaVM *VmCore::getJavaVM() {
 void nativeHook(JNIEnv *env) {
     BaseHook::init(env);
     UnixFileSystemHook::init(env);
-    VMClassLoaderHook::init(env);
+//    VMClassLoaderHook::init(env);
     ProcessHook::init(env);
 }
 
