@@ -31,4 +31,8 @@ public abstract class ClientConfiguration {
     public boolean isFixCodeItem() {
         return false;
     }
+
+    public boolean isEnableHookDump() {
+        return true;
+    }
 }

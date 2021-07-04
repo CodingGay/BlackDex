@@ -100,15 +100,17 @@ public final class AppInstrumentation extends BaseInstrumentationDelegate implem
     @Override
     public Application newApplication(ClassLoader cl, String className, Context context) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         ContextCompat.fix(context);
-        String absolutePath = new File(BlackBoxCore.get().getDexDumpDir(), context.getPackageName()).getAbsolutePath();
-        FileUtils.mkdirs(absolutePath);
-        Class<?> aClass = cl.loadClass(VMCore.class.getName());
-        try {
-            Method initDumpDex = aClass.getDeclaredMethod("hookDumpDex", String.class);
-            initDumpDex.setAccessible(true);
-            initDumpDex.invoke(null, absolutePath);
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (BlackBoxCore.get().isEnableHookDump()) {
+            String absolutePath = new File(BlackBoxCore.get().getDexDumpDir(), context.getPackageName()).getAbsolutePath();
+            FileUtils.mkdirs(absolutePath);
+            Class<?> aClass = cl.loadClass(VMCore.class.getName());
+            try {
+                Method initDumpDex = aClass.getDeclaredMethod("hookDumpDex", String.class);
+                initDumpDex.setAccessible(true);
+                initDumpDex.invoke(null, absolutePath);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
         return super.newApplication(cl, className, context);
     }
