@@ -99,13 +99,13 @@ public class BlackBoxCore extends ClientConfiguration {
 //            android.os.Debug.waitForDebugger();
         }
         if (isServerProcess()) {
-            Intent intent = new Intent();
-            intent.setClass(getContext(), DaemonService.class);
-            if (BuildCompat.isOreo()) {
-                getContext().startForegroundService(intent);
-            } else {
-                getContext().startService(intent);
-            }
+//            Intent intent = new Intent();
+//            intent.setClass(getContext(), DaemonService.class);
+//            if (BuildCompat.isOreo()) {
+//                getContext().startForegroundService(intent);
+//            } else {
+//                getContext().startService(intent);
+//            }
         }
         HookManager.get().init();
     }
