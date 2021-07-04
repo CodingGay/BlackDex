@@ -15,9 +15,16 @@
 
     <PreferenceCategory android:title="@string/advanced_setting">
         <SwitchPreferenceCompat
+                android:key="hook_dump"
+                android:summary="@string/hook_dump_desc"
+                android:title="@string/hook_dump" />
+        <SwitchPreferenceCompat
                 android:key="fix_code_item"
                 android:summary="@string/fix_code_item_desc"
                 android:title="@string/fix_code_item" />
 
+
     </PreferenceCategory>
+
+
 </PreferenceScreen>

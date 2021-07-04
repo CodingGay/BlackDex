@@ -28,6 +28,8 @@ class SettingFragment : PreferenceFragmentCompat() {
 
     private lateinit var fixCodeItemPreference: SwitchPreferenceCompat
 
+    private lateinit var hookDumpPreference: SwitchPreferenceCompat
+
     private val initialDirectory = AppManager.mBlackBoxLoader.getSavePath()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -43,6 +45,10 @@ class SettingFragment : PreferenceFragmentCompat() {
         fixCodeItemPreference = findPreference("fix_code_item")!!
         fixCodeItemPreference.onPreferenceChangeListener = mFixCodeItemChange
         fixCodeItemPreference.isChecked = AppManager.mBlackBoxLoader.isFixCodeItem()
+
+        hookDumpPreference = findPreference("hook_dump")!!
+        hookDumpPreference.onPreferenceChangeListener = mHookDumpChange
+        hookDumpPreference.isChecked = AppManager.mBlackBoxLoader.isHookDump()
 
     }
 
@@ -76,6 +82,11 @@ class SettingFragment : PreferenceFragmentCompat() {
             AppManager.mBlackBoxLoader.saveEnable(true)
             saveEnablePreference.isChecked = true
         }
+        return@OnPreferenceChangeListener true
+    }
+
+    private val mHookDumpChange = Preference.OnPreferenceChangeListener { _, newValue ->
+        AppManager.mBlackBoxLoader.saveEnable(newValue as Boolean)
         return@OnPreferenceChangeListener true
     }
 

@@ -32,4 +32,6 @@
 
     <string name="classes_progress" translatable="false">classes.dex (%1d/%1d)</string>
     <string name="dumping">Unpacking…</string>
+    <string name="hook_dump_desc">Use hook to improve the success rate of shelling</string>
+    <string name="hook_dump">Hook Dump</string>
 </resources>

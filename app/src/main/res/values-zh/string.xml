@@ -30,7 +30,8 @@
     <string name="fix_code_item_message">开启后将进行深度脱壳，深度脱壳会自主修复被抽取的指令，开启后请注意以下变化。\n\n1.脱壳时间会大幅度上升，预计几分钟都十几分钟不等\n2.脱壳期间有可能会出现应用闪退（遇到反检测等）\n3.会增加脱壳失败几率\n4.不一定能够100%还原
     </string>
 
-
+    <string name="hook_dump">Hook脱壳</string>
+    <string name="hook_dump_desc">使用Hook提高脱壳成功率</string>
     <string name="dumping">正在脱壳…</string>
 
 </resources>
