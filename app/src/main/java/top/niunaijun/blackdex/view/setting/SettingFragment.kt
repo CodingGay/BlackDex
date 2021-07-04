@@ -86,7 +86,7 @@ class SettingFragment : PreferenceFragmentCompat() {
     }
 
     private val mHookDumpChange = Preference.OnPreferenceChangeListener { _, newValue ->
-        AppManager.mBlackBoxLoader.saveEnable(newValue as Boolean)
+        AppManager.mBlackBoxLoader.setHookDump(newValue as Boolean)
         return@OnPreferenceChangeListener true
     }
 
