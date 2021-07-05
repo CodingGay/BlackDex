@@ -16,6 +16,7 @@ add_subdirectory(${DOBBY_SOURCE_DIR} blackdex_d.out)
 # Gradle automatically packages shared libraries with your APK.
 include_directories( dex )
 include_directories( base )
+include_directories( jnihook )
 include_directories( ./ )
 
 aux_source_directory(./ SRC7)

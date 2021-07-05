@@ -3,10 +3,10 @@
 //
 
 #include <jni.h>
-#include "jniHook.h"
 #include "utils/Log.h"
 #include "Art.h"
 #include "ArtM.h"
+#include "JniHook.h"
 
 static struct {
     int api_level;

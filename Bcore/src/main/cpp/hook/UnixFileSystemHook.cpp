@@ -4,7 +4,7 @@
 
 #include <IO.h>
 #include "UnixFileSystemHook.h"
-#import "jniHook/JniHook.h"
+#import <JniHook.h>
 
 /*
  * Class:     java_io_UnixFileSystem
