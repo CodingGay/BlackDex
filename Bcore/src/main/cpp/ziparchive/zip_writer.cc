@@ -27,7 +27,7 @@
 
 #include "android-base/logging.h"
 #include "utils/Compat.h"
-#include "android/Log.h"
+//#include "android/Log.h"
 
 #include "entry_name_utils-inl.h"
 #include "zip_archive_common.h"

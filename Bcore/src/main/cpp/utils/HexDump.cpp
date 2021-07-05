@@ -3,9 +3,9 @@
 //
 
 #include <jni.h>
-#include <stdio.h>
+#include <cstdio>
 #include "HexDump.h"
-#include "log.h"
+#include "Log.h"
 
 void HexDump(char *buf, int len, int addr) {
     int i, j, k;

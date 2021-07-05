@@ -8,7 +8,8 @@
 
 #include <cstring>
 #include "VMClassLoaderHook.h"
-#import "jniHook/jniHook.h"
+#include <JniHook.h>
+
 static bool hideXposedClass = false;
 
 HOOK_JNI(jobject, findLoadedClass, JNIEnv *env, jobject obj, jobject class_loader, jstring name) {
