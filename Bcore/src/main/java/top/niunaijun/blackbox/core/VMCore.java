@@ -173,12 +173,12 @@ public class VMCore {
             } catch (Throwable ignored) {
             }
 
-            Method[] declaredMethods = aClass.getMethods();
-            for (Method declaredMethod : declaredMethods) {
-                if (declaredMethod.getName().equals(methodName)) {
-                    String desc = MethodUtils.getDesc(declaredMethod);
+            Method[] methods = aClass.getMethods();
+            for (Method method : methods) {
+                if (method.getName().equals(methodName)) {
+                    String desc = MethodUtils.getDesc(method);
                     if (desc.equals(signature)) {
-                        return declaredMethod;
+                        return method;
                     }
                 }
             }
