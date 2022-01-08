@@ -44,6 +44,11 @@ BlackDex是一个运行在Android手机上的脱壳工具，支持5.0～12，无
 
 BlackDex下载：https://github.com/CodingGay/BlackDex/releases
 
+## 编译说明
+运行前请请Make Project一次
+运行前请请Make Project一次
+运行前请请Make Project一次
+
 ## 演示
 ![xx](demonstration.gif)
 
