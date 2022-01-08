@@ -46,6 +46,11 @@ This project distinguishes between 32-bit and 64-bit, it was compiled to 2 diffe
 
 BlackDex download：https://github.com/CodingGay/BlackDex/releases
 
+## Build
+Please make project once before running
+Please make project once before running
+Please make project once before running
+
 ## Preview
 
 ![xx](demonstration.gif)
