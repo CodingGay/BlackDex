@@ -11,8 +11,8 @@ android {
         applicationId "top.niunaijun.blackdex"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 5
-        versionName "3.1.0"
+        versionCode 6
+        versionName "3.2.0"
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
