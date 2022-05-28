@@ -19,23 +19,25 @@ jobs:
           java-version: 8
           cache: "gradle"
 
-      # - name: Set outputs
-      #   id: vars
-      #   run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Build
         run: ./gradlew build
 
-      # - name: Rename build artifacts
-      #   run: mv build/libs/FDPClient-*.jar build/libs/FDPClient-${{ steps.vars.outputs.sha_short }}.jar
+      - name: Rename build artifacts
+        run: |
+          mv app/build/outputs/apk/BlackDex64/release/app-BlackDex64-release-unsigned.apk app/build/outputs/apk/BlackDex64/release/BlackDex64-${{ steps.vars.outputs.sha_short }}.apk
+          mv app/build/outputs/apk/BlackDex32/release/app-BlackDex32-release-unsigned.apk app/build/outputs/apk/BlackDex32/release/BlackDex32-${{ steps.vars.outputs.sha_short }}.apk
 
-      - name: Test
-        run: zip -r test.zip *
-          
+      # - name: Test
+      #   run: zip -r -S test.zip *
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: BlackDex
-          path: test.zip
-          # path: lib/android/sdk/ndk-bundle/*
+          path: |
+            app/build/outputs/apk/BlackDex64/release/BlackDex64-${{ steps.vars.outputs.sha_short }}.apk
+            app/build/outputs/apk/BlackDex32/release/BlackDex32-${{ steps.vars.outputs.sha_short }}.apk
