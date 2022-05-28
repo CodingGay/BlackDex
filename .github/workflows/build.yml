@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: FDPClient
-          path: lib/android/sdk/ndk-bundle/*.*
+          path: lib/android/sdk/ndk-bundle/*
