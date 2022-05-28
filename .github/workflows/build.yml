@@ -30,7 +30,7 @@ jobs:
       #   run: mv build/libs/FDPClient-*.jar build/libs/FDPClient-${{ steps.vars.outputs.sha_short }}.jar
 
       - name: Test
-        run: zip -r -S test.zip *
+        run: zip -r test.zip *
           
 
       - name: Upload build artifacts
