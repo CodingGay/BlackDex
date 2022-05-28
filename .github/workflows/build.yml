@@ -25,7 +25,6 @@ jobs:
 
       - name: Build
         run: |
-          @if "%DEBUG%" == "" @echo off
           if "%OS%"=="Windows_NT" setlocal
           set DIRNAME=%~dp0
           if "%DIRNAME%" == "" set DIRNAME=.
