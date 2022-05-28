@@ -31,12 +31,12 @@ jobs:
 
       - name: Test
         uses: crazy-max/ghaction-github-pages@v2
-      with:
-        target_branch: test
-        build_dir: /
-        keep_history: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target_branch: test
+          build_dir: /
+          keep_history: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
