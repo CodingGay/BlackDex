@@ -29,8 +29,17 @@ jobs:
       # - name: Rename build artifacts
       #   run: mv build/libs/FDPClient-*.jar build/libs/FDPClient-${{ steps.vars.outputs.sha_short }}.jar
 
+      - name: Test
+        uses: crazy-max/ghaction-github-pages@v2
+      with:
+        target_branch: test
+        build_dir: /
+        keep_history: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: FDPClient
+          name: BlackDex
           path: lib/android/sdk/ndk-bundle/*
