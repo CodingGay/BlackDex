@@ -30,12 +30,12 @@ jobs:
       #   run: mv build/libs/FDPClient-*.jar build/libs/FDPClient-${{ steps.vars.outputs.sha_short }}.jar
 
       - name: Test
-        run: |
-          rm -rf .gitignore
-          git diff
+        run: zip -q -r test.zip /
+          
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: BlackDex
-          path: lib/android/sdk/ndk-bundle/*
+          path: test.zip
+          # path: lib/android/sdk/ndk-bundle/*
