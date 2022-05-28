@@ -2,7 +2,8 @@ name: build
 
 on:
   - push
-  jobs:
+
+jobs:
   build:
     runs-on: windows-latest
     steps:
